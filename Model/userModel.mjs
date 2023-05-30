@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 
@@ -14,18 +14,23 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
     },
-    email: {
-        type: String,
-        unique: true,
-        lowercase: true,
-        validate: [validator.isEmail, 'please enter a valid email']
-    },
-    religion: {
+    gender: {
         type: String
     },
+    phone: {
+        type: Number,
+    },
+    profilePhoto: {
+        type: String
+    },
+    dob: {
+        type: Date,
+    },
     personalInfo: {
-
-        gender: {
+        religion: {
+            type: String
+        },
+        caste: {
             type: String
         },
         maritalStatus: {
@@ -54,13 +59,43 @@ const userSchema = new mongoose.Schema({
         },
         bloodGroup: {
             type: String
+        },
+        license: {
+            type: String
+        },
+        financialStatus: {
+            type: String
         }
     },
-    job: {
+    occupation: {
+        hasJob: {
+            type: String
+        },
+        country: {
+            type: String
+        },
+        state: {
+            type: String
+        },
+        district: {
+            type: String
+        },
+        city: {
+            type: String
+        },
+        annualIncome: {
+            type: String
+        },
         designation: {
             type: String
         },
+        jobCategory: {
+            type: String
+        },
         jobType: {
+            type: String
+        },
+        jobStream: {
             type: String
         },
         department: {
@@ -76,13 +111,7 @@ const userSchema = new mongoose.Schema({
             type: String
         }
     },
-    address: {
-        permanentAddress: {
-            type: String
-        },
-        pincode: {
-            type: Number
-        },
+    native: {
         district: {
             type: String
         },
@@ -96,63 +125,30 @@ const userSchema = new mongoose.Schema({
             type: String
         }
     },
-    phone: {
-        type: Number,
-    },
-    secondPhoneNumber: {
-        type: Number
-    },
-    profilePhoto: {
-        type: String
-    },
-    dob: {
-        type: Date,
-    },
-    course: {
+    academic: {
         pursueAny: {
+            type: String
+        },
+        academicStream: {
             type: String
         },
         courseName: {
             type: String
         },
         university: {
-            type: String
+            type: Types.ObjectId,
+            ref: 'Institution'
         },
-        location: {
-            type: String
-        }
-    },
-    highestEducation: {
-        stream: {
-            type: String
+        institute: {
+            type: Types.ObjectId,
+            ref: 'Institution'
         },
-        course: {
-            type: String
-        },
-        university: {
-            type: String
-        },
-        location: {
-            type: String
-        },
-        completedYear: {
+        passOut: {
             type: Number
         }
     },
     family: {
-        aboutFamily: {
-            type: String
-        },
-        aboutYou: {
-            type: String
-        },
-        hobbies: {
-            type: [String]
-        },
         fatherName: {
-            type: String
-        },
-        fatherFamilyName: {
             type: String
         },
         fatherEducation: {
@@ -164,31 +160,60 @@ const userSchema = new mongoose.Schema({
         motherName: {
             type: String
         },
-        motherFamilyName: {
-            type: String
-        },
         motherEducation: {
             type: String
         },
         motherOccupation: {
             type: String
         },
-        brothers: {
-            totalBrothers: {
-                type: Number
-            },
-            marriedBrothers: {
-                type: Number
-            }
+        homeTown: {
+            type: String
         },
-        sisters: {
-            totalSisters: {
-                type: Number
-            },
-            marriedSisters: {
-                type: Number
-            }
-        }
+        houseName: {
+            type: String
+        },
+        secondPhone: {
+            type: Number
+        },
+        homePhone: {
+            type: Number
+        },
+        diocese: {
+            type: String
+        },
+        siblings: {
+            type: Number
+        },
+        pincode: {
+            type: Number
+        },
+    },
+    preferenceData: {
+        age: {
+            type: Number
+        },
+        height: {
+            type: Number
+        },
+        caste: {
+            type: String
+        },
+        occupation: {
+            type: String
+        },
+        qualification: {
+            type: String
+        },
+        location: {
+            type: String
+        },
+        maritalStatus: {
+            type: String
+        },
+    },
+    userType: {
+        type: String,
+        default: 'Basic'
     },
     password: {
         type: String,
@@ -208,15 +233,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'Active'
     },
-    date: {
-        type: Date,
-        default: Date.now()
-    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date
 
-})
+}, { timestamps: true })
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next()
