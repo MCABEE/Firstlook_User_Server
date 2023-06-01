@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import User from '../Model/userModel.mjs';
+import catchAsync from '../utils/catchAsync.mjs';
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -36,8 +37,8 @@ export const addAboutYou = catchAsync(async (req, res, next) => {
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
             firstName: req.body.firstName,
-            secondName: req.body.secondName,
-            userName: req.body.userName,
+            lastName: req.body.lastName,
+            displayName: req.body.displayName,
             dob: req.body.dob,
             gender: req.body.gender,
         }

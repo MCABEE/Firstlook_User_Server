@@ -1,16 +1,15 @@
 import crypto from 'crypto'
 import mongoose, { Types } from 'mongoose'
-import validator from 'validator'
 import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
     },
-    secondName: {
+    lastName: {
         type: String
     },
-    userName: {
+    displayName: {
         type: String,
         unique: true,
     },
