@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: Number,
+        unique: true,
     },
     profilePhoto: {
         type: String
@@ -214,6 +215,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'Basic'
     },
+    status: {
+        type: String,
+        default: 'Active'
+    },
+    registartionStatus: {
+        type: [String],
+        default: ["About You", "Native", "Personal Info", "Academic", "Occupation", "Family", "Upload", "Verification"]
+    },
     password: {
         type: String,
         minlength: 8,
@@ -227,10 +236,6 @@ const userSchema = new mongoose.Schema({
             },
             message: 'Password are not the same'
         }
-    },
-    status: {
-        type: String,
-        default: 'Active'
     },
     passwordChangedAt: Date,
     passwordResetToken: String,

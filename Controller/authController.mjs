@@ -24,10 +24,19 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 export const addUser = catchAsync(async (req, res, next) => {
-    const newUser = await User.create({
-        phone: req.body.phone,
-    });
-    createSendToken(newUser, 201, res)
+
+    const phone = req.body.phone
+    const user = await User.find({ phone: phone })
+    
+    if(!user) {
+        const newUser = await User.create({
+            phone: phone,
+        });
+        createSendToken(newUser, 201, res)
+    }
+
+    createSendToken(user, 201, res)
+
 });
 
 export const addAboutYou = catchAsync(async (req, res, next) => {
@@ -58,7 +67,7 @@ export const addNative = catchAsync(async (req, res, next) => {
             'native.country': req.body.country,
             'native.district': req.body.district,
             'native.state': req.body.state,
-            'native.motherTongue': req.body.motherTongue,
+            'native.motherTongue': req.body.motherToungue,
         }
     }, { multi: true })
 

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 
 import userRouter from './Router/userRoutes.mjs'
+import adminRouter from './Router/adminRoutes.mjs'
 
 const app = express()
 
@@ -23,5 +24,6 @@ app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
 
 app.use('/', userRouter)
+app.use('/api/data/general', adminRouter)
 
 export default app;
