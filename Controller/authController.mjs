@@ -25,7 +25,7 @@ const createSendToken = (user, statusCode, res) => {
 
 export const addUser = catchAsync(async (req, res, next) => {
 
-    const phone = req.body.phone
+    const phone = req.body?.phone
     const user = await User.find({ phone: phone })
     
     if(!user) {
@@ -41,15 +41,15 @@ export const addUser = catchAsync(async (req, res, next) => {
 
 export const addAboutYou = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            displayName: req.body.displayName,
-            dob: req.body.dob,
-            gender: req.body.gender,
+            firstName: req.body?.firstName,
+            lastName: req.body?.lastName,
+            displayName: req.body?.displayName,
+            dob: req.body?.dob,
+            gender: req.body?.gender,
         }
     }, { multi: true })
 
@@ -60,14 +60,14 @@ export const addAboutYou = catchAsync(async (req, res, next) => {
 
 export const addNative = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'native.country': req.body.country,
-            'native.district': req.body.district,
-            'native.state': req.body.state,
-            'native.motherTongue': req.body.motherToungue,
+            'native.country': req.body?.country,
+            'native.district': req.body?.district,
+            'native.state': req.body?.state,
+            'native.motherTongue': req.body?.motherToungue,
         }
     }, { multi: true })
 
@@ -78,17 +78,17 @@ export const addNative = catchAsync(async (req, res, next) => {
 
 export const addPersonalInfo = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'personalInfo.religion': req.body.religion,
-            'personalInfo.caste': req.body.caste,
-            'personalInfo.maritalStatus': req.body.maritalStatus,
-            'personalInfo.height': req.body.height,
-            'personalInfo.weight': req.body.weight,
-            'personalInfo.bodytype': req.body.bodytype,
-            'personalInfo.physicalStatus': req.body.physicalStatus,
+            'personalInfo.religion': req.body?.religion,
+            'personalInfo.caste': req.body?.caste,
+            'personalInfo.maritalStatus': req.body?.maritalStatus,
+            'personalInfo.height': req.body?.height,
+            'personalInfo.weight': req.body?.weight,
+            'personalInfo.bodytype': req.body?.bodyType,
+            'personalInfo.physicalStatus': req.body?.physicalStatus,
         }
     }, { multi: true })
 
@@ -99,16 +99,16 @@ export const addPersonalInfo = catchAsync(async (req, res, next) => {
 
 export const addAdditionalPersonalInfo = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'personalInfo.drinkingHabits': req.body.drinkingHabits,
-            'personalInfo.smokingHabits': req.body.smokingHabits,
-            'personalInfo.foodHabits': req.body.foodHabits,
-            'personalInfo.bloodGroup': req.body.bloodGroup,
-            'personalInfo.license': req.body.license,
-            'personalInfo.financialStatus': req.body.financialStatus,
+            'personalInfo.drinkingHabits': req.body?.drinkingHabits,
+            'personalInfo.smokingHabits': req.body?.smokingHabits,
+            'personalInfo.foodHabits': req.body?.foodHabits,
+            'personalInfo.bloodGroup': req.body?.bloodGroup,
+            'personalInfo.license': req.body?.license,
+            'personalInfo.financialStatus': req.body?.financialStatus,
         }
     }, { multi: true })
 
@@ -119,16 +119,17 @@ export const addAdditionalPersonalInfo = catchAsync(async (req, res, next) => {
 
 export const addAcademic = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'academic.pursueAny': req.body.pursueAny,
-            'academic.academicStream': req.body.academicStream,
-            'academic.courseName': req.body.courseName,
-            'academic.university': req.body.university,
-            'academic.institute': req.body.institute,
-            'academic.passOut': req.body.passOut,
+            'academic.pursueAny': req.body?.option,
+            'academic.academicStream': req.body?.academicStream,
+            'academic.courseName': req.body?.courseName,
+            'academic.country': req.body?.country,
+            'academic.university': req.body?.university,
+            'academic.institute': req.body?.institute,
+            'academic.passOut': req.body?.passYear,
         }
     }, { multi: true })
 
@@ -139,16 +140,16 @@ export const addAcademic = catchAsync(async (req, res, next) => {
 
 export const addOccupation = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'occupation.hasJob': req.body.hasJob,
-            'occupation.country': req.body.country,
-            'occupation.state': req.body.state,
-            'occupation.district': req.body.district,
-            'occupation.city': req.body.city,
-            'occupation.annualIncome': req.body.annualIncome,
+            'occupation.hasJob': req.body?.option,
+            'occupation.country': req.body?.country,
+            'occupation.state': req.body?.state,
+            'occupation.district': req.body?.district,
+            'occupation.city': req.body?.city,
+            'occupation.annualIncome': req.body?.annualIncome,
         }
     }, { multi: true })
 
@@ -159,18 +160,16 @@ export const addOccupation = catchAsync(async (req, res, next) => {
 
 export const addOccupationCategory = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'occupation.designation': req.body.designation,
-            'occupation.jobCategory': req.body.jobCategory,
-            'occupation.jobType': req.body.jobType,
-            'occupation.jobStream': req.body.jobStream,
+            'occupation.designation': req.body?.designation,
+            'occupation.jobCategory': req.body?.jobCategory,
+            'occupation.jobType': req.body?.jobType,
+            'occupation.jobStream': req.body?.stream,
             'occupation.department': req.body?.department,
-            'occupation.joinedYear': req.body.joinedYear,
-            'occupation.industry': req.body.industry,
-            'occupation.companyName': req.body.companyName,
+            'occupation.companyName': req.body?.companyName,
         }
     }, { multi: true })
 
@@ -185,13 +184,13 @@ export const addFamily = catchAsync(async (req, res, next) => {
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'family.fatherName': req.body.fatherName,
-            'family.fatherEducation': req.body.fatherEducation,
-            'family.fatherOccupation': req.body.fatherOccupation,
-            'family.motherName': req.body.motherName,
-            'family.motherEducation': req.body.motherEducation,
-            'family.motherOccupation': req.body.motherOccupation,
-            'family.siblings': req.body.siblings,
+            'family.fatherName': req.body?.fatherName,
+            'family.fatherEducation': req.body?.fatherEducation,
+            'family.fatherOccupation': req.body?.fatherOccupation,
+            'family.motherName': req.body?.motherName,
+            'family.motherEducation': req.body?.motherEducation,
+            'family.motherOccupation': req.body?.motherOccupation,
+            'family.siblings': req.body?.siblings,
         }
     }, { multi: true })
 
@@ -202,16 +201,16 @@ export const addFamily = catchAsync(async (req, res, next) => {
 
 export const addFamilyAddress = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'family.houseName': req.body.houseName,
-            'family.homeTown': req.body.homeTown,
-            'family.pincode': req.body.pincode,
-            'family.homePhone': req.body.homePhone,
-            'family.secondPhone': req.body.secondPhone,
-            'family.diocese': req.body.diocese,
+            'family.houseName': req.body?.houseName,
+            'family.homeTown': req.body?.homeTown,
+            'family.pincode': req.body?.pincode,
+            'family.homePhone': req.body?.homePhone,
+            'family.secondPhone': req.body?.secondPhone,
+            'family.diocese': req.body?.diocese,
         }
     }, { multi: true })
 

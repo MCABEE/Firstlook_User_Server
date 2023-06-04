@@ -101,12 +101,6 @@ const userSchema = new mongoose.Schema({
         department: {
             type: String
         },
-        joinedYear: {
-            type: Number
-        },
-        industry: {
-            type: String
-        },
         companyName: {
             type: String
         }
@@ -135,13 +129,14 @@ const userSchema = new mongoose.Schema({
         courseName: {
             type: String
         },
+        country: {
+            type: String
+        },
         university: {
-            type: Types.ObjectId,
-            ref: 'Institution'
+            type: String
         },
         institute: {
-            type: Types.ObjectId,
-            ref: 'Institution'
+            type: String
         },
         passOut: {
             type: Number
