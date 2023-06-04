@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.mjs",
+    "build": "rimraf ./dist && jsc",
+    "dev": "nodemon --exec mjs-node server.mjs",
+    "start": "node server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
