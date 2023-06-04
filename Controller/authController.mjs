@@ -51,7 +51,7 @@ export const addAboutYou = catchAsync(async (req, res, next) => {
             dob: req.body?.dob,
             gender: req.body?.gender,
         }
-    }, { multi: true })
+    }, { multi: true }) 
 
     res.status(200).json({
         status: "success"
