@@ -1,5 +1,5 @@
 import express from 'express'
-import { addAboutYou, addAcademic, addAdditionalPersonalInfo, addFamily, addFamilyAddress, addNative, addOccupation, addOccupationCategory, addPersonalInfo, addUser } from '../Controller/authController.mjs'
+import { addAboutYou, addAboutYouQuick, addAcademic, addAdditionalPersonalInfo, addFamily, addFamilyAddress, addNative, addNativeQuick, addOccupation, addOccupationCategory, addPersonalInfo, addUser } from '../Controller/authController.mjs'
 
 const router = express.Router()
 
@@ -42,5 +42,13 @@ router
 router
     .route('/register/:userId/familyAddress')
     .patch(addFamilyAddress)
+
+router
+    .route('/register/:userId/aboutYouQuick')
+    .post(addAboutYouQuick)
+
+router
+    .route('/register/:userId/addNativeQuick')
+    .patch(addNativeQuick)
 
 export default router

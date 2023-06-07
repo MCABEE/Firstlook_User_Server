@@ -27,8 +27,8 @@ export const addUser = catchAsync(async (req, res, next) => {
 
     const phone = req.body?.phone
     const user = await User.find({ phone: phone })
-    
-    if(!user) {
+
+    if (!user) {
         const newUser = await User.create({
             phone: phone,
         });
@@ -51,7 +51,7 @@ export const addAboutYou = catchAsync(async (req, res, next) => {
             dob: req.body?.dob,
             gender: req.body?.gender,
         }
-    }, { multi: true }) 
+    }, { multi: true })
 
     res.status(200).json({
         status: "success"
@@ -211,6 +211,52 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
             'family.homePhone': req.body?.homePhone,
             'family.secondPhone': req.body?.secondPhone,
             'family.diocese': req.body?.diocese,
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
+});
+
+export const addAboutYouQuick = catchAsync(async (req, res, next) => {
+
+    const userId = req.params?.userId
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            firstName: req.body?.firstName,
+            lastName: req.body?.lastName,
+            displayName: req.body?.displayName,
+            dob: req.body?.dob,
+            gender: req.body?.gender,
+            'personalInfo.religion': req.body?.religion,
+            'personalInfo.caste': req.body?.caste,
+            'personalInfo.maritalStatus': req.body?.maritalStatus
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
+});
+
+export const addNativeQuick = catchAsync(async (req, res, next) => {
+
+    const userId = req.params?.userId
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'native.country': req.body?.country,
+            'native.district': req.body?.district,
+            'native.state': req.body?.state,
+            'native.motherTongue': req.body?.motherToungue,
+            'occupation.designation': req.body?.designation,
+            'occupation.jobCategory': req.body?.jobCategory,
+            'occupation.jobType': req.body?.jobType,
+            'occupation.jobStream': req.body?.stream,
+            'occupation.department': req.body?.department,
+            'occupation.companyName': req.body?.companyName
         }
     }, { multi: true })
 
