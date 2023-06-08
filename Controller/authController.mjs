@@ -26,7 +26,7 @@ const createSendToken = (user, statusCode, res) => {
 export const addUser = catchAsync(async (req, res, next) => {
 
     const phone = req.body?.phone
-    const user = await User.find({ phone: phone })
+    const user = await User.findOne({ phone: phone })
 
     if (!user) {
         const newUser = await User.create({
