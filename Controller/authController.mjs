@@ -228,8 +228,8 @@ export const addAboutYouQuick = catchAsync(async (req, res, next) => {
             firstName: req.body?.firstName,
             lastName: req.body?.lastName,
             displayName: req.body?.displayName,
-            dob: req.body?.dob,
-            gender: req.body?.gender,
+            dob: req.body?.selectedDate,
+            gender: req.body?.selectedGender,
             'personalInfo.religion': req.body?.religion,
             'personalInfo.caste': req.body?.caste,
             'personalInfo.maritalStatus': req.body?.maritalStatus
