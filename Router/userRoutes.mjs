@@ -45,7 +45,7 @@ router
 
 router
     .route('/register/:userId/aboutYouQuick')
-    .post(addAboutYouQuick)
+    .patch(addAboutYouQuick)
 
 router
     .route('/register/:userId/addNativeQuick')
