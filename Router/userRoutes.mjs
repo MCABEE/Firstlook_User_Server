@@ -1,7 +1,12 @@
 import express from 'express'
 import { addAboutYou, addAboutYouQuick, addAcademic, addAdditionalPersonalInfo, addFamily, addFamilyAddress, addNative, addNativeQuick, addOccupation, addOccupationCategory, addPersonalInfo, addUser } from '../Controller/authController.mjs'
+import { createRndomTestUsers } from '../Controller/testDataController.mjs'
 
 const router = express.Router()
+
+router
+    .route('/createTestUsers')
+    .post(createRndomTestUsers)
 
 router
     .route('/register/mobile')

@@ -5,6 +5,7 @@
   "main": "server.mjs",
   "scripts": {
     "build": "rimraf ./dist && jsc",
+    "dev": "nodemon server.mjs",
     "start": "node server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,5 +23,8 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.22",
     "validator": "^13.9.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2"
   }
 }
