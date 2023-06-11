@@ -185,22 +185,25 @@ const userSchema = new mongoose.Schema({
     },
     preferenceData: {
         age: {
-            type: Number
+            type: String
         },
         height: {
-            type: Number
+            type: String
+        },
+        religion: {
+            type: String
         },
         caste: {
             type: String
         },
         occupation: {
-            type: String
+            type: [String]
         },
         qualification: {
-            type: String
+            type: [String]
         },
         location: {
-            type: String
+            type: [String]
         },
         maritalStatus: {
             type: String
