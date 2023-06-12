@@ -86,10 +86,23 @@ const selectDesination = (stream) => {
     }
 }
 
+const selectMinAge = (gender) =>
+    gender === 'female' ?
+        Math.floor(Math.random() * (35 - 21 + 1)) + 21
+        : Math.floor(Math.random() * (35 - 18 + 1)) + 18;
+
+const selectMinHeight = () =>
+    Math.floor(Math.random() * (190 - 110 + 1) + 110)
+
 const createTestUser = () => {
 
+    const gender = faker.helpers.arrayElement(['male', 'female'])
     const religion = selectReligion();
     const caste = selectCaste(religion);
+    const minAge = selectMinAge(gender);
+    const maxAge = minAge + 5;
+    const minHeight = selectMinHeight();
+    const maxHeight = minHeight + 10;
     const nativeState = selectState();
     const district = selectDistrict(nativeState);
     const occupationState = selectState()
@@ -99,13 +112,12 @@ const createTestUser = () => {
     const academicStream = selectAcademicStream();
     const courseName = selectCourse(academicStream)
 
-
     return {
         _id: faker.database.mongodbObjectId(),
         displayName: faker.person.fullName(),
-        gender: faker.person.sex(),
+        gender: gender,
         phone: faker.phone.number('##########'),
-        dob: faker.date.birthdate({ min: 18, max: 40, mode: 'age' }),
+        dob: faker.date.birthdate({ min: minAge, max: 40, mode: 'age' }),
         personalInfo: {
             religion: religion,
             caste: caste,
@@ -122,10 +134,9 @@ const createTestUser = () => {
             country: 'India',
             state: occupationState,
             city: occupationCity,
-            annualIncome: faker.helpers.arrayElement[
-                'Less than 01 Lakh', '01 - 03 Lakh', '03 - 06 Lakh', '06 - 12 Lakh', '12 - 24 Lakh', '24 - 36 Lakh', '36 - 48 Lak',
-                '48 - 60 Lakh', '60 lakh - 1 Cr'
-            ],
+            annualIncome: faker.helpers.arrayElement([
+                'Less than 01 Lakh', '01 - 03 Lakh', '03 - 06 Lakh', '06 - 12 Lakh', '12 - 24 Lakh', '24 - 36 Lakh', '36 - 48 Lak', '48 - 60 Lakh', '60 lakh - 1 Cr'
+            ]),
             stream: occupationStream,
             designation: designation,
             companyName: faker.company.name()
@@ -149,9 +160,14 @@ const createTestUser = () => {
             pincode: faker.location.zipCode('######')
         },
         preferenceData: {
-            age: faker.helpers.arrayElement(['18 - 21', '22 - 25', '26 - 29', '30 - 33', '34 - 37', '38 - 40']),
-            height: faker.helpers.arrayElement(['110 - 120', '120 - 130', '130 - 140', '140 - 150', '150 - 160', '160 - 170', '170 - 180', '180 - 190', '190 - 200']),
-            religion: religion,
+            age: {
+                minAge: minAge,
+                maxAge: maxAge,
+            },
+            height: {
+                minHeight: minHeight,
+                maxHeight: maxHeight,
+            },
             caste: caste,
             maritalStatus: faker.helpers.arrayElement(['Unmarried', 'Divorced']),
             location: faker.helpers.arrayElements([...KeralaDistricts, ...TamilnaduDistricts, ...KarnadakaDistricts], { min: 1, max: 3 }),

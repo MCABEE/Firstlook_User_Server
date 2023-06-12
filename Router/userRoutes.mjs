@@ -1,13 +1,18 @@
 import express from 'express'
 import { addAboutYou, addAboutYouQuick, addAcademic, addAdditionalPersonalInfo, addFamily, addFamilyAddress, addNative, addNativeQuick, addOccupation, addOccupationCategory, addPersonalInfo, addUser } from '../Controller/authController.mjs'
 import { createRndomTestUsers, deleteTestUsers } from '../Controller/testDataController.mjs'
+import { cacheProfiles, matchingProfile } from '../Controller/profileMatchingController.mjs'
 
 const router = express.Router()
 
 router
-    .route('/createTestUsers')
+    .route('/testUsers')
     .post(createRndomTestUsers)
     .delete(deleteTestUsers)
+
+router
+    .route('/matchingProfiles/:userId')
+    .get(cacheProfiles, matchingProfile)
 
 router
     .route('/register/mobile')
