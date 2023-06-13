@@ -220,6 +220,14 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: ["About You", "Native", "Personal Info", "Academic", "Occupation", "Family", "Upload", "Verification"]
     },
+    favourites: [{
+        type: Types.ObjectId, 
+        ref: 'User', 
+    }],
+    proposals: [{
+        type: Types.ObjectId, 
+        ref: 'User', 
+    }],
     password: {
         type: String,
         minlength: 8,
