@@ -185,10 +185,13 @@ const userSchema = new mongoose.Schema({
     },
     preferenceData: {
         age: {
-            type: String
+            minAge: Number,
+            maxAge: Number,
         },
         height: {
-            type: Number
+            type: Number,
+            minHeight: Number,
+            maxHeight: Number,
         },
         caste: {
             type: String
