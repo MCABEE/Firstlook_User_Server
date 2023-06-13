@@ -185,7 +185,7 @@ const userSchema = new mongoose.Schema({
     },
     preferenceData: {
         age: {
-            type: Number
+            type: String
         },
         height: {
             type: Number
@@ -194,13 +194,13 @@ const userSchema = new mongoose.Schema({
             type: String
         },
         occupation: {
-            type: String
+            type: [String]
         },
         qualification: {
-            type: String
+            type: [String]
         },
         location: {
-            type: String
+            type: [String]
         },
         maritalStatus: {
             type: String
@@ -218,6 +218,14 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: ["About You", "Native", "Personal Info", "Academic", "Occupation", "Family", "Upload", "Verification"]
     },
+    favourites: [{
+        type: Types.ObjectId, 
+        ref: 'User', 
+    }],
+    proposals: [{
+        type: Types.ObjectId, 
+        ref: 'User', 
+    }],
     password: {
         type: String,
         minlength: 8,
