@@ -161,11 +161,14 @@ const userSchema = new mongoose.Schema({
         motherOccupation: {
             type: String
         },
+        houseName: {
+            type: String
+        },
         homeTown: {
             type: String
         },
-        houseName: {
-            type: String
+        pincode: {
+            type: Number
         },
         secondPhone: {
             type: Number
@@ -179,16 +182,15 @@ const userSchema = new mongoose.Schema({
         siblings: {
             type: Number
         },
-        pincode: {
-            type: Number
-        },
     },
     preferenceData: {
         age: {
-            type: String
+            minAge: Number,
+            maxAge: Number,
         },
         height: {
-            type: Number
+            minHeight: Number,
+            maxHeight: Number,
         },
         caste: {
             type: String
