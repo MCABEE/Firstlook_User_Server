@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker'
+// import { faker } from '@faker-js/faker'
 import User from '../Model/userModel.mjs'
 import catchAsync from '../utils/catchAsync.mjs'
 
