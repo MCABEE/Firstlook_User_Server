@@ -22,7 +22,7 @@ app.use(cors({ origin: '*', methods: ["GET", "POST", "DELETE", "PATCH"] }));
 app.use(logger('dev'))
 app.use(cookieParser())
 
-app.use('/', userRouter)
+app.use('/api/v1/', userRouter)
 app.use('/api/data/general', adminRouter)
 
 // Error Handler
