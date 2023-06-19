@@ -2,6 +2,9 @@ import express from 'express'
 import { addAboutYou, addAboutYouQuick, addAcademic, addAdditionalPersonalInfo, addFamily, addFamilyAddress, addNative, addNativeQuick, addOccupation, addOccupationCategory, addPersonalInfo, addUser } from '../Controller/authController.mjs'
 import { createRndomTestUsers, deleteTestUsers } from '../Controller/testDataController.mjs'
 import { cacheProfiles, matchingProfile } from '../Controller/profileMatchingController.mjs'
+import { chat, getMessage } from '../Controller/chatController.mjs'
+import { uploadImage } from '../Cloudflare/imageUploader.mjs'
+import { convertImage } from '../Cloudflare/imageConvert.mjs'
 
 const router = express.Router()
 
@@ -61,5 +64,17 @@ router
 router
     .route('/register/:userId/addNativeQuick')
     .patch(addNativeQuick)
+
+router
+    .route('/chat')
+    .post(chat)
+
+router
+    .route('/getMessage/:user1Id/:user2Id')
+    .get(getMessage)
+
+router
+    .route('/uploadImage/postImage')
+    .post(convertImage, uploadImage)
 
 export default router

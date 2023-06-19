@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../Model/userModel.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
+import Institution from '../Model/Admin/institutions/institutionModel.mjs';
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -120,6 +121,7 @@ export const addAcademic = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
 
+    const institutionData = Institution.find()
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
             'academic.pursueAny': req.body?.option,
@@ -261,5 +263,17 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: "success"
+    })
+});
+
+export const getUserDetails = catchAsync(async (req, res, next) => {
+
+    const userId = req.params?.userId
+
+    const userData = await User.findOne({ _id: userId })
+
+    res.status(200).json({
+        status: "success",
+        userData
     })
 });

@@ -1,4 +1,5 @@
 import Message from "../Model/messageModel.mjs";
+import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
 
 export const chat = catchAsync(async (req, res, next) => {
@@ -32,7 +33,7 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
 
     const uniqueConnections = [...new Set(connection)];
 
-    const users = await Vendor.find({ _id: { $in: uniqueConnections } })
+    const users = await User.find({ _id: { $in: uniqueConnections } })
 
     const sortedUsers = uniqueConnections.map(id => users.find(user => user._id.toString() === id));
 
@@ -48,8 +49,8 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
         });
     });
     const results = Object.entries(counts).map(([userId, count]) => ({ userId, count }));
-    users.map((vendorId) => {
-        results.map((data) => vendorId._id == data.userId ? connectionCount.push(data) : null)
+    users.map((user) => {
+        results.map((data) => user._id == data.userId ? connectionCount.push(data) : null)
     })
 
     res.status(200).json({ sortedUsers, connectionCount })
