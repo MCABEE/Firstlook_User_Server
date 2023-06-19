@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema({
         type: Number,
         unique: true,
     },
-    profilePhoto: {
-        type: String
+    images: {
+        type: [String]
     },
     dob: {
         type: Date,
