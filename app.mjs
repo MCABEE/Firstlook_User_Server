@@ -22,6 +22,10 @@ app.use(cors({ origin: '*', methods: ["GET", "POST", "DELETE", "PATCH"] }));
 app.use(logger('dev'))
 app.use(cookieParser())
 
+// Health check
+app.get('/', (req, res) => res.status(200).json({ message: 'OK' }))
+
+// api endpoints
 app.use('/api/v1/', userRouter)
 app.use('/api/data/general', adminRouter)
 
