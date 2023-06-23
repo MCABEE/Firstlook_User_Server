@@ -5,8 +5,15 @@ import { cacheProfiles, matchingProfile } from '../Controller/profileMatchingCon
 import { chat, getMessage } from '../Controller/chatController.mjs'
 import { uploadImage } from '../Cloudflare/imageUploader.mjs'
 import { convertImage } from '../Cloudflare/imageConvert.mjs'
+import { compressAndUploadVideo } from '../Cloudflare/videoUploader.mjs'
+import { upload } from '../Cloudflare/videoConverter.mjs'
+import { getUserDetails } from '../Controller/userController.mjs'
 
 const router = express.Router()
+
+router
+    .route('/getUserData')
+    .get(getUserDetails)
 
 router
     .route('/testUsers')
@@ -76,5 +83,9 @@ router
 router
     .route('/uploadImage/postImage')
     .post(convertImage, uploadImage)
+
+router
+    .route('/uploadVideo/postVideo')
+    .post(upload.single('video'), compressAndUploadVideo)
 
 export default router

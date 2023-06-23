@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         type: Number,
         unique: true,
     },
+    videos: [
+        {
+            type: String
+        }
+    ],
     images: {
         type: [String]
     },
@@ -134,6 +139,9 @@ const userSchema = new mongoose.Schema({
         university: {
             type: String
         },
+        college: {
+            type: String
+        },
         institute: {
             type: String
         },
@@ -220,12 +228,12 @@ const userSchema = new mongoose.Schema({
         default: ["About You", "Native", "Personal Info", "Academic", "Occupation", "Family", "Upload", "Verification"]
     },
     favourites: [{
-        type: Types.ObjectId, 
-        ref: 'User', 
+        type: Types.ObjectId,
+        ref: 'User',
     }],
     proposals: [{
-        type: Types.ObjectId, 
-        ref: 'User', 
+        type: Types.ObjectId,
+        ref: 'User',
     }],
     password: {
         type: String,

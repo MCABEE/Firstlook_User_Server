@@ -121,7 +121,6 @@ export const addAcademic = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
 
-    const institutionData = Institution.find()
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
             'academic.pursueAny': req.body?.option,
@@ -130,9 +129,36 @@ export const addAcademic = catchAsync(async (req, res, next) => {
             'academic.country': req.body?.country,
             'academic.university': req.body?.university,
             'academic.institute': req.body?.institute,
+            'academic.college': req.body?.college,
             'academic.passOut': req.body?.passYear,
         }
     }, { multi: true })
+
+    if (req.body?.university) {
+        const existingUniversity = await Institution.findOne({ name: req.body?.university });
+
+        if (!existingUniversity) {
+            const uni = await Institution.create({ country: req.body?.country, name: req.body?.university, type: 'university' });
+        }
+    }
+
+    if (req.body?.college) {
+        const existingCollege = await Institution.findOne({ name: req.body?.college });
+
+        if (!existingCollege) {
+            const det = await Institution.create({ country: req.body?.country, name: req.body?.college, type: 'college' });
+            console.log(det)
+        }
+    }
+
+    if(req.body?.institute) {
+        const existingInstitute = await Institution.findOne({ name: req.body?.institute });
+
+        if (!existingInstitute) {
+            const was = await Institution.create({ country: req.body?.country, name: req.body?.institute, type: 'institute' });
+            console.log(was)
+        }
+    }
 
     res.status(200).json({
         status: "success"
@@ -263,17 +289,5 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: "success"
-    })
-});
-
-export const getUserDetails = catchAsync(async (req, res, next) => {
-
-    const userId = req.params?.userId
-
-    const userData = await User.findOne({ _id: userId })
-
-    res.status(200).json({
-        status: "success",
-        userData
     })
 });
