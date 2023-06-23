@@ -87,7 +87,7 @@ export const addPersonalInfo = catchAsync(async (req, res, next) => {
             'personalInfo.maritalStatus': req.body?.maritalStatus,
             'personalInfo.height': req.body?.height,
             'personalInfo.weight': req.body?.weight,
-            'personalInfo.bodytype': req.body?.bodyType,
+            'personalInfo.bodyType': req.body?.bodyType,
             'personalInfo.physicalStatus': req.body?.physicalStatus,
         }
     }, { multi: true })
