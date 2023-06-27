@@ -151,7 +151,7 @@ export const addAcademic = catchAsync(async (req, res, next) => {
         }
     }
 
-    if(req.body?.institute) {
+    if (req.body?.institute) {
         const existingInstitute = await Institution.findOne({ name: req.body?.institute });
 
         if (!existingInstitute) {
@@ -291,3 +291,28 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
         status: "success"
     })
 });
+
+export const addTestImage = catchAsync(async (req, res, next) => {
+
+    const fieldName = 'images';
+    const fieldValueMale = ['https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Chris_Hemsworth_by_Gage_Skidmore_2.jpg/1200px-Chris_Hemsworth_by_Gage_Skidmore_2.jpg'];
+
+    const fieldValueFemale = ['https://i.pinimg.com/736x/ca/d8/b8/cad8b88dc23c2bee0ff95008442308d0--suit-and-tie-business-formal.jpg'];
+
+    await User.updateMany(
+        { gender: 'male' },
+        { $set: { [fieldName]: fieldValueMale } },
+        { upsert: false }
+    )
+
+    await User.updateMany(
+        { gender: 'female' },
+        { $set: { [fieldName]: fieldValueFemale } },
+        { upsert: false }
+    )
+
+    res.status(200).json({
+        status: "success"
+    })
+
+})
