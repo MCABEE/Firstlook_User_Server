@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAcademicStream, getCaste, getCity, getCountries, getCourseName, getDesignation, getDistricts, getHomeTown, getInstitute, getMotherToungue, getOccupationStream, getPincode, getReligion, getStates, getUniversity } from '../Controller/userController.mjs'
+import { getAcademicStream, getCaste, getCity, getCollege, getCountries, getCourseName, getDesignation, getDistricts, getHomeTown, getInstitute, getMotherToungue, getOccupationStream, getPincode, getReligion, getStates, getUniversity } from '../Controller/userController.mjs'
 
 const router = express.Router()
 
@@ -54,6 +54,10 @@ router
 router
     .route('/getAllInstitutes')
     .get(getInstitute)
+
+router
+    .route('/getAllColleges')
+    .get(getCollege)
 
 router
     .route('/getAllDesignations')

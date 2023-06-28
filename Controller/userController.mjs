@@ -12,7 +12,17 @@ import Pincode from "../Model/Admin/places/pincodeModel.mjs";
 import State from "../Model/Admin/places/stateModel.mjs";
 import Caste from "../Model/Admin/religion/casteModel.mjs";
 import Religion from "../Model/Admin/religion/religionModel.mjs";
+import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
+
+export const getUserDetails = catchAsync(async (req, res, next) => {
+
+    const userId = req.query?.userId
+
+    const userData = await User.findById(userId)
+    res.status(200).json({ userData });
+
+});
 
 export const getCountries = catchAsync(async (req, res, next) => {
 
@@ -104,13 +114,37 @@ export const getUniversity = catchAsync(async (req, res, next) => {
 
 });
 
+export const getCollege = catchAsync(async (req, res, next) => {
+
+    const country = req.query?.country || null;
+    const institutions = await Institution.aggregate([
+        {
+            $match: {
+                type: "college",
+                $expr: {
+                    $cond: {
+                        if: { $ne: [country, null] },
+                        then: { $eq: ['$country', country] },
+                        else: {}
+                    }
+                }
+            }
+        },
+        {
+            $group: { _id: '$country', institutions: { $push: { _id: '$_id', name: '$name', location: '$location' } } }
+        }
+    ])
+    res.status(200).json({ institutions })
+
+});
+
 export const getInstitute = catchAsync(async (req, res, next) => {
 
     const country = req.query?.country || null;
     const institutions = await Institution.aggregate([
         {
             $match: {
-                type: { $in: ["college", "institute"] },
+                type: "institute",
                 $expr: {
                     $cond: {
                         if: { $ne: [country, null] },

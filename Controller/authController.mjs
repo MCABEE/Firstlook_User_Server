@@ -87,7 +87,7 @@ export const addPersonalInfo = catchAsync(async (req, res, next) => {
             'personalInfo.maritalStatus': req.body?.maritalStatus,
             'personalInfo.height': req.body?.height,
             'personalInfo.weight': req.body?.weight,
-            'personalInfo.bodytype': req.body?.bodyType,
+            'personalInfo.bodyType': req.body?.bodyType,
             'personalInfo.physicalStatus': req.body?.physicalStatus,
         }
     }, { multi: true })
@@ -121,7 +121,6 @@ export const addAcademic = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
 
-    const institutionData = Institution.find()
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
             'academic.pursueAny': req.body?.option,
@@ -130,9 +129,36 @@ export const addAcademic = catchAsync(async (req, res, next) => {
             'academic.country': req.body?.country,
             'academic.university': req.body?.university,
             'academic.institute': req.body?.institute,
+            'academic.college': req.body?.college,
             'academic.passOut': req.body?.passYear,
         }
     }, { multi: true })
+
+    if (req.body?.university) {
+        const existingUniversity = await Institution.findOne({ name: req.body?.university });
+
+        if (!existingUniversity) {
+            const uni = await Institution.create({ country: req.body?.country, name: req.body?.university, type: 'university' });
+        }
+    }
+
+    if (req.body?.college) {
+        const existingCollege = await Institution.findOne({ name: req.body?.college });
+
+        if (!existingCollege) {
+            const det = await Institution.create({ country: req.body?.country, name: req.body?.college, type: 'college' });
+            console.log(det)
+        }
+    }
+
+    if (req.body?.institute) {
+        const existingInstitute = await Institution.findOne({ name: req.body?.institute });
+
+        if (!existingInstitute) {
+            const was = await Institution.create({ country: req.body?.country, name: req.body?.institute, type: 'institute' });
+            console.log(was)
+        }
+    }
 
     res.status(200).json({
         status: "success"
@@ -266,14 +292,27 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
     })
 });
 
-export const getUserDetails = catchAsync(async (req, res, next) => {
+export const addTestImage = catchAsync(async (req, res, next) => {
 
-    const userId = req.params?.userId
+    const fieldName = 'images';
+    const fieldValueMale = ['https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Chris_Hemsworth_by_Gage_Skidmore_2.jpg/1200px-Chris_Hemsworth_by_Gage_Skidmore_2.jpg'];
 
-    const userData = await User.findOne({ _id: userId })
+    const fieldValueFemale = ['https://i.pinimg.com/736x/ca/d8/b8/cad8b88dc23c2bee0ff95008442308d0--suit-and-tie-business-formal.jpg'];
+
+    await User.updateMany(
+        { gender: 'male' },
+        { $set: { [fieldName]: fieldValueMale } },
+        { upsert: false }
+    )
+
+    await User.updateMany(
+        { gender: 'female' },
+        { $set: { [fieldName]: fieldValueFemale } },
+        { upsert: false }
+    )
 
     res.status(200).json({
-        status: "success",
-        userData
+        status: "success"
     })
-});
+
+})
