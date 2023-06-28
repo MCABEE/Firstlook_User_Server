@@ -19,12 +19,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         unique: true,
     },
-    videos: [
-        {
-            type: String
-        }
-    ],
-    images: {   
+    profileImage: {   
         type: String
     },
     dob: {
