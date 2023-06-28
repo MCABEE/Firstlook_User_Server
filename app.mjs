@@ -25,7 +25,7 @@ app.use(cookieParser())
 // Health check
 app.get('/', (req, res) => res.status(200).json({ message: 'OK' }))
 
-// api endpoints
+// api endpoints 
 app.use('/api/v1/', userRouter)
 app.use('/api/data/general', adminRouter)
 

@@ -24,7 +24,6 @@ export const uploadImage = catchAsync(async (req, res, next) => {
 
         // Binary data of the image file
         const binaryData = data;
-
         // Create a new FormData object
         const formData = new FormData();
         formData.append('file', binaryData, { filename: imageFile });
