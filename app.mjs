@@ -28,9 +28,9 @@ app.use(cookieParser())
 app.get('/', (req, res) => res.status(200).json({ message: 'OK' }))
 
 // api endpoints 
-app.use('/auth/v1/', authRouter)
-app.use('/api/v1/', protectRoute, userRouter)
-app.use('/api/data/general', protectRoute, adminRouter)
+app.use('/auth/v1', authRouter)
+app.use('/user/v1', protectRoute, userRouter)
+app.use('/data/general', protectRoute, adminRouter)
 
 // Error Handler
 app.use(() => { throw new AppError({ statusCode: 404, message: 'Route not found!' }) })

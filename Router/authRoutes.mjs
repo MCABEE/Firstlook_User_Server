@@ -7,8 +7,4 @@ router
     .route('/register/mobile')
     .post(authController.addUser)
 
-router
-    .route('/login')
-    .post(authController.verifyLogin)
-
 export default router;

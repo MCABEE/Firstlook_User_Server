@@ -20,14 +20,12 @@ export const uploadImage = catchAsync(async (req, res, next) => {
         if (err) {
             // Handle the error
             console.error(err);
-            return;
+            return next(err)
         }
 
-        // Binary data of the image file
-        const binaryData = data;
-        // Create a new FormData object
+        // Create a new FormData object with the image binary data
         const formData = new FormData();
-        formData.append('file', binaryData, { filename: imageFile });
+        formData.append('file', data, { filename: imageFile });
 
         const options = {
             method: 'POST',

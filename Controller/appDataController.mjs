@@ -12,6 +12,7 @@ import State from "../Model/Admin/places/stateModel.mjs";
 import Caste from "../Model/Admin/religion/casteModel.mjs";
 import Religion from "../Model/Admin/religion/religionModel.mjs";
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
+import catchAsync from '../utils/catchAsync.mjs';
 
 export const getCountries = catchAsync(async (req, res, next) => {
 
