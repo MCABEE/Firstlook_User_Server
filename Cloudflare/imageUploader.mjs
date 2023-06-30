@@ -2,10 +2,8 @@ import axios from 'axios';
 import catchAsync from '../utils/catchAsync.mjs';
 import FormData from 'form-data';
 import AppError from '../utils/appError.mjs';
-import fs from 'fs'
 import path from 'path';
-import User from '../Model/userModel.mjs';
-import Post from '../Model/postModel.mjs';
+import fs from 'fs'
 
 export const uploadImage = catchAsync(async (req, res, next) => {
 
@@ -39,28 +37,16 @@ export const uploadImage = catchAsync(async (req, res, next) => {
 
         const response = await axios.request(options)
 
-        const userId = req.query?.userId
-
         // Extract the Cloudflare media URL from the response
         const imageUrl = response.data.result.variants[0]
         const imageId = response.data.result.id
 
-        await User.findByIdAndUpdate(userId,
-            { $set: { 'profileImage.url': imageUrl, 'profileImage.id': imageId } }
-        )
-
-        await Post.create({
-            userId,
-            content: {
-                url: imageUrl,
-                id: imageId,
-            }
-        })
-
         // delete the local image file
         fs.unlinkSync(req.file);
+        
+        req.post = { url: imageUrl, id: imageId, type: 'image' }
+        next();
 
-        res.status(200).json({ url: imageUrl })
     });
 
 })

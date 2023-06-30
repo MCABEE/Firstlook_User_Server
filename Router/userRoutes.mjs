@@ -8,6 +8,7 @@ import { convertImage } from '../Cloudflare/imageConvert.mjs'
 import { compressAndUploadVideo } from '../Cloudflare/videoUploader.mjs'
 import { upload } from '../Cloudflare/videoConverter.mjs'
 import { getUserDetails } from '../Controller/userController.mjs'
+import { savePost, updateProfilePhoto } from '../Controller/postController.mjs'
 
 const router = express.Router()
 
@@ -82,7 +83,7 @@ router
 
 router
     .route('/uploadImage/postImage')
-    .post(convertImage, uploadImage)
+    .post(convertImage, uploadImage, updateProfilePhoto, savePost)
 
 router
     .route('/uploadVideo/postVideo')
