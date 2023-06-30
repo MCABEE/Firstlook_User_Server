@@ -20,6 +20,10 @@ const aadharSchema = new mongoose.Schema({
     },
     address: {
         type: String
+    },
+    images: {
+        sideOne: { url: String, id: String },
+        sideTwo: { url: String, id: String },
     }
 }, { timestamps: true })
 

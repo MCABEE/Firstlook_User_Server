@@ -5,6 +5,7 @@ import AppError from '../utils/appError.mjs';
 import fs from 'fs'
 import path from 'path';
 import User from '../Model/userModel.mjs';
+import Post from '../Model/postModel.mjs';
 
 export const uploadImage = catchAsync(async (req, res, next) => {
 
@@ -19,14 +20,12 @@ export const uploadImage = catchAsync(async (req, res, next) => {
         if (err) {
             // Handle the error
             console.error(err);
-            return;
+            return next(err)
         }
 
-        // Binary data of the image file
-        const binaryData = data;
-        // Create a new FormData object
+        // Create a new FormData object with the image binary data
         const formData = new FormData();
-        formData.append('file', binaryData, { filename: imageFile });
+        formData.append('file', data, { filename: imageFile });
 
         const options = {
             method: 'POST',
@@ -39,18 +38,29 @@ export const uploadImage = catchAsync(async (req, res, next) => {
         };
 
         const response = await axios.request(options)
-        
+
         const userId = req.query?.userId
 
         // Extract the Cloudflare media URL from the response
-        const result = response.data.result
-        
-        await User.findByIdAndUpdate(userId, { $set: { images: result.variants[0] } })
+        const imageUrl = response.data.result.variants[0]
+        const imageId = response.data.result.id
+
+        await User.findByIdAndUpdate(userId,
+            { $set: { 'profileImage.url': imageUrl, 'profileImage.id': imageId } }
+        )
+
+        await Post.create({
+            userId,
+            content: {
+                url: imageUrl,
+                id: imageId,
+            }
+        })
 
         // delete the local image file
         fs.unlinkSync(req.file);
 
-        res.status(200).json({ result })
+        res.status(200).json({ url: imageUrl })
     });
 
 })

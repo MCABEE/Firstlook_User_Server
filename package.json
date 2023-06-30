@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.mjs",
   "scripts": {
-    "dev": "node server.mjs",
+    "dev": "nodemon server.mjs",
     "start": "node server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,6 +29,7 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2"
+    "@faker-js/faker": "^8.0.2",
+    "nodemon": "^2.0.22"
   }
 }

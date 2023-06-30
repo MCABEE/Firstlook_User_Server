@@ -2,10 +2,13 @@ import mongoose from 'mongoose'
 
 const OccupationStreamSchema = new mongoose.Schema({
 
-    name: { 
-        type: String, 
-        required: true, 
-        unique: true 
+    category: {
+        type: String,
+        require: true
+    },
+    name: {
+        type: String,
+        required: true
     }
 
 })

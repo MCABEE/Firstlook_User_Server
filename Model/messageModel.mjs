@@ -5,13 +5,19 @@ const messageSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+    sender: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
     message: {
         type: String,
         required: true
     },
-    sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+    type: {
+        type: String,
+        enum: ['text', 'image'],
+        default: 'text'
     },
     read: {
         type: Boolean,

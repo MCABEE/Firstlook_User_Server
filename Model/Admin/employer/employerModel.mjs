@@ -2,18 +2,13 @@ import mongoose from 'mongoose'
 
 const employerSchema = new mongoose.Schema({
 
-    country: { 
-        type: String, 
-        required: true 
+    category: {
+        type: String,
+        required: true
     },
-    stream: { 
-        type: String, 
-        unique:true, 
-        required: true 
-    },
-    name: { 
-        type: String, 
-        required: true 
+    name: {
+        type: String,
+        required: true
     }
 
 })

@@ -1,7 +1,7 @@
 import express from 'express'
-import { addAboutYou, addAboutYouQuick, addAcademic, addAdditionalPersonalInfo, addFamily, addFamilyAddress, addNative, addNativeQuick, addOccupation, addOccupationCategory, addPersonalInfo, addTestImage, addUser } from '../Controller/authController.mjs'
+import * as userController from '../Controller/userController.mjs'
+import * as profileMatchingController from '../Controller/profileMatchingController.mjs'
 import { createRndomTestUsers, deleteTestUsers } from '../Controller/testDataController.mjs'
-import { cacheProfiles, matchingProfile } from '../Controller/profileMatchingController.mjs'
 import { chat, getMessage } from '../Controller/chatController.mjs'
 import { uploadImage } from '../Cloudflare/imageUploader.mjs'
 import { convertImage } from '../Cloudflare/imageConvert.mjs'
@@ -13,7 +13,7 @@ const router = express.Router()
 
 router
     .route('/addTestImage')
-    .patch(addTestImage)
+    .patch(userController.addTestImage)
 
 router
     .route('/getUserData')
@@ -26,55 +26,51 @@ router
 
 router
     .route('/matchingProfiles/:userId')
-    .get(cacheProfiles, matchingProfile)
-
-router
-    .route('/register/mobile')
-    .post(addUser)
+    .get(profileMatchingController.cacheProfiles, profileMatchingController.matchingProfile)
 
 router
     .route('/register/:userId/aboutYou')
-    .patch(addAboutYou)
+    .patch(userController.addAboutYou)
 
 router
     .route('/register/:userId/native')
-    .patch(addNative)
+    .patch(userController.addNative)
 
 router
     .route('/register/:userId/personalInfo')
-    .patch(addPersonalInfo)
+    .patch(userController.addPersonalInfo)
 
 router
     .route('/register/:userId/additionalPersonalInfo')
-    .patch(addAdditionalPersonalInfo)
+    .patch(userController.addAdditionalPersonalInfo)
 
 router
     .route('/register/:userId/academic')
-    .patch(addAcademic)
+    .patch(userController.addAcademic)
 
 router
     .route('/register/:userId/occupation')
-    .patch(addOccupation)
+    .patch(userController.addOccupation)
 
 router
     .route('/register/:userId/occupationCategory')
-    .patch(addOccupationCategory)
+    .patch(userController.addOccupationCategory)
 
 router
     .route('/register/:userId/family')
-    .patch(addFamily)
+    .patch(userController.addFamily)
 
 router
     .route('/register/:userId/familyAddress')
-    .patch(addFamilyAddress)
+    .patch(userController.addFamilyAddress)
 
 router
     .route('/register/:userId/aboutYouQuick')
-    .patch(addAboutYouQuick)
+    .patch(userController.addAboutYouQuick)
 
 router
     .route('/register/:userId/addNativeQuick')
-    .patch(addNativeQuick)
+    .patch(userController.addNativeQuick)
 
 router
     .route('/chat')

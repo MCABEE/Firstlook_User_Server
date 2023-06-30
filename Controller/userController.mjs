@@ -1,17 +1,4 @@
-import Course from "../Model/Admin/academic/courseModel.mjs";
-import Stream from "../Model/Admin/academic/streamModel.mjs";
-import Language from "../Model/Admin/basic/languageModel.mjs";
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
-import Designation from "../Model/Admin/occupation/designationModel.mjs";
-import OccupationStream from "../Model/Admin/occupation/streamModel.mjs";
-import City from "../Model/Admin/places/cityModel.mjs";
-import Country from "../Model/Admin/places/countryModel.mjs";
-import District from "../Model/Admin/places/districtModel.mjs";
-import HomeTown from "../Model/Admin/places/homeTownModel.mjs";
-import Pincode from "../Model/Admin/places/pincodeModel.mjs";
-import State from "../Model/Admin/places/stateModel.mjs";
-import Caste from "../Model/Admin/religion/casteModel.mjs";
-import Religion from "../Model/Admin/religion/religionModel.mjs";
 import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
 
@@ -24,179 +11,280 @@ export const getUserDetails = catchAsync(async (req, res, next) => {
 
 });
 
-export const getCountries = catchAsync(async (req, res, next) => {
+export const addAboutYou = catchAsync(async (req, res, next) => {
 
-    const countries = await Country.find()
-    res.status(200).json({ countries });
+    const userId = req.params?.userId
 
-});
-
-export const getStates = catchAsync(async (req, res, next) => {
-
-    const country = req.query?.country
-    const query = country ? { country } : {}
-    const states = await State.find(query)
-    res.status(200).json({ states })
-
-});
-
-export const getDistricts = catchAsync(async (req, res, next) => {
-
-    const state = req.query?.state
-    const query = state ? { state } : {}
-    const districts = await District.find(query)
-    res.status(200).json({ districts })
-
-});
-
-export const getMotherToungue = catchAsync(async (req, res, next) => {
-
-    const state = req.query?.state
-    const query = state ? { state } : {}
-    const motherToungue = await Language.find(query)
-    res.status(200).json({ motherToungue })
-
-});
-
-export const getReligion = catchAsync(async (req, res, next) => {
-
-    const religion = await Religion.find()
-    res.status(200).json({ religion });
-
-});
-
-export const getCaste = catchAsync(async (req, res, next) => {
-
-    const religion = req.query?.religion
-    const query = religion ? { religion } : {}
-    const caste = await Caste.find(query)
-    res.status(200).json({ caste })
-
-});
-
-export const getAcademicStream = catchAsync(async (req, res, next) => {
-
-    const academicStream = await Stream.find()
-    res.status(200).json({ academicStream });
-
-});
-
-export const getCourseName = catchAsync(async (req, res, next) => {
-
-    const stream = req.query?.stream
-    const query = stream ? { stream } : {}
-    const courseName = await Course.find(query)
-    res.status(200).json({ courseName })
-
-});
-
-export const getUniversity = catchAsync(async (req, res, next) => {
-
-    const country = req.query?.country || null;
-    const institutions = await Institution.aggregate([
-        {
-            $match: {
-                type: "university",
-                $expr: {
-                    $cond: {
-                        if: { $ne: [country, null] },
-                        then: { $eq: ['$country', country] },
-                        else: {}
-                    }
-                }
-            }
-        },
-        {
-            $group: { _id: '$country', institutions: { $push: { _id: '$_id', name: '$name', location: '$location' } } }
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            firstName: req.body?.firstName,
+            lastName: req.body?.lastName,
+            displayName: req.body?.displayName,
+            dob: req.body?.dob,
+            gender: req.body?.gender,
         }
-    ])
-    res.status(200).json({ institutions })
+    }, { multi: true })
 
+    res.status(200).json({
+        status: "success"
+    })
 });
 
-export const getCollege = catchAsync(async (req, res, next) => {
+export const addNative = catchAsync(async (req, res, next) => {
 
-    const country = req.query?.country || null;
-    const institutions = await Institution.aggregate([
-        {
-            $match: {
-                type: "college",
-                $expr: {
-                    $cond: {
-                        if: { $ne: [country, null] },
-                        then: { $eq: ['$country', country] },
-                        else: {}
-                    }
-                }
-            }
-        },
-        {
-            $group: { _id: '$country', institutions: { $push: { _id: '$_id', name: '$name', location: '$location' } } }
+    const userId = req.params?.userId
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'native.country': req.body?.country,
+            'native.district': req.body?.district,
+            'native.state': req.body?.state,
+            'native.motherTongue': req.body?.motherToungue,
         }
-    ])
-    res.status(200).json({ institutions })
+    }, { multi: true })
 
+    res.status(200).json({
+        status: "success"
+    })
 });
 
-export const getInstitute = catchAsync(async (req, res, next) => {
+export const addPersonalInfo = catchAsync(async (req, res, next) => {
 
-    const country = req.query?.country || null;
-    const institutions = await Institution.aggregate([
-        {
-            $match: {
-                type: "institute",
-                $expr: {
-                    $cond: {
-                        if: { $ne: [country, null] },
-                        then: { $eq: ['$country', country] },
-                        else: {}
-                    }
-                }
-            }
-        },
-        {
-            $group: { _id: '$country', institutions: { $push: { _id: '$_id', name: '$name', location: '$location' } } }
+    const userId = req.params?.userId
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'personalInfo.religion': req.body?.religion,
+            'personalInfo.caste': req.body?.caste,
+            'personalInfo.maritalStatus': req.body?.maritalStatus,
+            'personalInfo.height': req.body?.height,
+            'personalInfo.weight': req.body?.weight,
+            'personalInfo.bodyType': req.body?.bodyType,
+            'personalInfo.physicalStatus': req.body?.physicalStatus,
         }
-    ])
-    res.status(200).json({ institutions })
+    }, { multi: true })
 
+    res.status(200).json({
+        status: "success"
+    })
 });
 
-export const getPincode = catchAsync(async (req, res, next) => {
+export const addAdditionalPersonalInfo = catchAsync(async (req, res, next) => {
 
-    const pincode = await Pincode.find()
-    res.status(200).json({ pincode });
+    const userId = req.params?.userId
 
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'personalInfo.drinkingHabits': req.body?.drinkingHabits,
+            'personalInfo.smokingHabits': req.body?.smokingHabits,
+            'personalInfo.foodHabits': req.body?.foodHabits,
+            'personalInfo.bloodGroup': req.body?.bloodGroup,
+            'personalInfo.license': req.body?.license,
+            'personalInfo.financialStatus': req.body?.financialStatus,
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
 });
 
-export const getHomeTown = catchAsync(async (req, res, next) => {
+export const addAcademic = catchAsync(async (req, res, next) => {
 
-    const homeTown = await HomeTown.find()
-    res.status(200).json({ homeTown });
+    const userId = req.params?.userId
 
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'academic.pursueAny': req.body?.option,
+            'academic.academicStream': req.body?.academicStream,
+            'academic.courseName': req.body?.courseName,
+            'academic.country': req.body?.country,
+            'academic.university': req.body?.university,
+            'academic.institute': req.body?.institute,
+            'academic.college': req.body?.college,
+            'academic.passOut': req.body?.passYear,
+        }
+    }, { multi: true })
+
+    if (req.body?.university) {
+        const existingUniversity = await Institution.findOne({ name: req.body?.university });
+
+        if (!existingUniversity) {
+            const uni = await Institution.create({ country: req.body?.country, name: req.body?.university, type: 'university' });
+        }
+    }
+
+    if (req.body?.college) {
+        const existingCollege = await Institution.findOne({ name: req.body?.college });
+
+        if (!existingCollege) {
+            const det = await Institution.create({ country: req.body?.country, name: req.body?.college, type: 'college' });
+            console.log(det)
+        }
+    }
+
+    if (req.body?.institute) {
+        const existingInstitute = await Institution.findOne({ name: req.body?.institute });
+
+        if (!existingInstitute) {
+            const was = await Institution.create({ country: req.body?.country, name: req.body?.institute, type: 'institute' });
+            console.log(was)
+        }
+    }
+
+    res.status(200).json({
+        status: "success"
+    })
 });
 
-export const getCity = catchAsync(async (req, res, next) => {
+export const addOccupation = catchAsync(async (req, res, next) => {
 
-    const state = req.query?.state
-    const query = state ? { state } : {}
-    const cities = await City.find(query)
-    res.status(200).json({ cities })
+    const userId = req.params?.userId
 
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'occupation.hasJob': req.body?.option,
+            'occupation.country': req.body?.country,
+            'occupation.state': req.body?.state,
+            'occupation.district': req.body?.district,
+            'occupation.city': req.body?.city,
+            'occupation.annualIncome': req.body?.annualIncome,
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
 });
 
-export const getDesignation = catchAsync(async (req, res, next) => {
+export const addOccupationCategory = catchAsync(async (req, res, next) => {
 
-    const stream = req.query?.stream
-    const query = stream ? { stream } : {}
-    const designation = await Designation.find(query)
-    res.status(200).json({ designation })
+    const userId = req.params?.userId
 
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'occupation.designation': req.body?.designation,
+            'occupation.jobCategory': req.body?.jobCategory,
+            'occupation.jobType': req.body?.jobType,
+            'occupation.jobStream': req.body?.stream,
+            'occupation.department': req.body?.department,
+            'occupation.companyName': req.body?.companyName,
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
 });
 
-export const getOccupationStream = catchAsync(async (req, res, next) => {
+export const addFamily = catchAsync(async (req, res, next) => {
 
-    const occupationStream = await OccupationStream.find()
-    res.status(200).json({ occupationStream });
+    const userId = req.params.userId
 
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'family.fatherName': req.body?.fatherName,
+            'family.fatherEducation': req.body?.fatherEducation,
+            'family.fatherOccupation': req.body?.fatherOccupation,
+            'family.motherName': req.body?.motherName,
+            'family.motherEducation': req.body?.motherEducation,
+            'family.motherOccupation': req.body?.motherOccupation,
+            'family.siblings': req.body?.siblings,
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
 });
+
+export const addFamilyAddress = catchAsync(async (req, res, next) => {
+
+    const userId = req.params?.userId
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'family.houseName': req.body?.houseName,
+            'family.homeTown': req.body?.homeTown,
+            'family.pincode': req.body?.pincode,
+            'family.homePhone': req.body?.homePhone,
+            'family.secondPhone': req.body?.secondPhone,
+            'family.diocese': req.body?.diocese,
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
+});
+
+export const addAboutYouQuick = catchAsync(async (req, res, next) => {
+
+    const userId = req.params?.userId
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            firstName: req.body?.firstName,
+            lastName: req.body?.lastName,
+            displayName: req.body?.displayName,
+            dob: req.body?.selectedDate,
+            gender: req.body?.selectedGender,
+            'personalInfo.religion': req.body?.religion,
+            'personalInfo.caste': req.body?.caste,
+            'personalInfo.maritalStatus': req.body?.maritalStatus
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
+});
+
+export const addNativeQuick = catchAsync(async (req, res, next) => {
+
+    const userId = req.params?.userId
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'native.country': req.body?.country,
+            'native.district': req.body?.district,
+            'native.state': req.body?.state,
+            'native.motherTongue': req.body?.motherToungue,
+            'occupation.designation': req.body?.designation,
+            'occupation.jobCategory': req.body?.jobCategory,
+            'occupation.jobType': req.body?.jobType,
+            'occupation.jobStream': req.body?.stream,
+            'occupation.department': req.body?.department,
+            'occupation.companyName': req.body?.companyName
+        }
+    }, { multi: true })
+
+    res.status(200).json({
+        status: "success"
+    })
+});
+
+export const addTestImage = catchAsync(async (req, res, next) => {
+
+    const fieldName = 'images';
+    const fieldValueMale = ['https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Chris_Hemsworth_by_Gage_Skidmore_2.jpg/1200px-Chris_Hemsworth_by_Gage_Skidmore_2.jpg'];
+
+    const fieldValueFemale = ['https://i.pinimg.com/736x/ca/d8/b8/cad8b88dc23c2bee0ff95008442308d0--suit-and-tie-business-formal.jpg'];
+
+    await User.updateMany(
+        { gender: 'male' },
+        { $set: { [fieldName]: fieldValueMale } },
+        { upsert: false }
+    )
+
+    await User.updateMany(
+        { gender: 'female' },
+        { $set: { [fieldName]: fieldValueFemale } },
+        { upsert: false }
+    )
+
+    res.status(200).json({
+        status: "success"
+    })
+
+})

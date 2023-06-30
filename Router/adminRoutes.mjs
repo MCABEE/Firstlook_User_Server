@@ -1,70 +1,70 @@
 import express from 'express'
-import { getAcademicStream, getCaste, getCity, getCollege, getCountries, getCourseName, getDesignation, getDistricts, getHomeTown, getInstitute, getMotherToungue, getOccupationStream, getPincode, getReligion, getStates, getUniversity } from '../Controller/userController.mjs'
+import * as appController from '../Controller/appDataController.mjs'
 
 const router = express.Router()
 
 router
     .route('/getAllCountries')
-    .get(getCountries)
+    .get(appController.getCountries)
 
 router
     .route('/state')
-    .get(getStates)
+    .get(appController.getStates)
 
 router
     .route('/district')
-    .get(getDistricts)
+    .get(appController.getDistricts)
 
 router
     .route('/motherToungue')
-    .get(getMotherToungue)
+    .get(appController.getMotherToungue)
 
 router
     .route('/getAllReligion')
-    .get(getReligion)
+    .get(appController.getReligion)
 
 router
     .route('/caste')
-    .get(getCaste)
+    .get(appController.getCaste)
 
 router
     .route('/getAllAcademicStream')
-    .get(getAcademicStream)
+    .get(appController.getAcademicStream)
 
 router
     .route('/course')
-    .get(getCourseName)
+    .get(appController.getCourseName)
 
 router
     .route('/getAllPincode')
-    .get(getPincode)
+    .get(appController.getPincode)
 
 router
     .route('/getAllHomeTown')
-    .get(getHomeTown)
+    .get(appController.getHomeTown)
 
 router
     .route('/city')
-    .get(getCity)
+    .get(appController.getCity)
 
 router
     .route('/getAllUniversities')
-    .get(getUniversity)
+    .get(appController.getUniversity)
 
 router
     .route('/getAllInstitutes')
-    .get(getInstitute)
+    .get(appController.getInstitute)
 
 router
     .route('/getAllColleges')
-    .get(getCollege)
+    .get(appController.getCollege)
 
 router
     .route('/getAllDesignations')
-    .get(getDesignation)
+    .get(appController.getDesignation)
 
 router
     .route('/getAllJobStreams')
-    .get(getOccupationStream)
+    .get(appController.getOccupationStream)
 
 export default router

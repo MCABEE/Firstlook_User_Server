@@ -1,17 +1,14 @@
 import mongoose from 'mongoose'
 
 const designationSchema = new mongoose.Schema({
-
-    stream: { 
-        type: String, 
-        required: true 
+    category: {
+        type: String,
+        required: true
     },
-    name: { 
-        type: String, 
-        required: true, 
-        unique: true 
-    }
-
+    name: {
+        type: String,
+        required: true
+    },
 })
 
 const Designation = mongoose.model('Designation', designationSchema)
