@@ -3,9 +3,11 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import errorHandler from './middleware/errorHandler.mjs'
+import authRouter from './Router/authRoutes.mjs'
 import userRouter from './Router/userRoutes.mjs'
 import adminRouter from './Router/adminRoutes.mjs'
 import AppError from './utils/appError.mjs'
+import protectRoute from './middleware/authMiddleware.mjs'
 
 const app = express()
 
@@ -26,8 +28,9 @@ app.use(cookieParser())
 app.get('/', (req, res) => res.status(200).json({ message: 'OK' }))
 
 // api endpoints 
-app.use('/api/v1/', userRouter)
-app.use('/api/data/general', adminRouter)
+app.use('/auth/v1/', authRouter)
+app.use('/api/v1/', protectRoute, userRouter)
+app.use('/api/data/general', protectRoute, adminRouter)
 
 // Error Handler
 app.use(() => { throw new AppError({ statusCode: 404, message: 'Route not found!' }) })

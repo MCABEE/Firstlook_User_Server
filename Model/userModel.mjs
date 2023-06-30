@@ -19,8 +19,9 @@ const userSchema = new mongoose.Schema({
         type: Number,
         unique: true,
     },
-    profileImage: {   
-        type: String
+    profileImage: {
+        url: String,
+        id: String,
     },
     dob: {
         type: Date,
@@ -212,6 +213,7 @@ const userSchema = new mongoose.Schema({
     },
     userType: {
         type: String,
+        enum: ['Basic', 'Standard', 'Premium'],
         default: 'Basic'
     },
     status: {

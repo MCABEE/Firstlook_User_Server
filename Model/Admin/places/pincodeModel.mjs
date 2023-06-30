@@ -4,7 +4,7 @@ const pincodeSchema = new mongoose.Schema({
 
     district: { 
         type: Types.ObjectId, 
-        ref:'State', 
+        ref:'District',
         required: true 
     },
     code: { 
@@ -13,8 +13,7 @@ const pincodeSchema = new mongoose.Schema({
     },
     postOffice: { 
         type: String, 
-        required: true, 
-        unique: true 
+        required: true,
     }
 
 })
