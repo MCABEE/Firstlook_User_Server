@@ -8,13 +8,9 @@ import { convertImage } from '../Cloudflare/imageConvert.mjs'
 import { compressAndUploadVideo } from '../Cloudflare/videoUploader.mjs'
 import { upload } from '../Cloudflare/videoConverter.mjs'
 import { getUserDetails } from '../Controller/userController.mjs'
-import { savePost, updateProfilePhoto } from '../Controller/postController.mjs'
+import { savePost, updateProfileImage, updateProfileImageAndSaveAsPost } from '../Controller/postController.mjs'
 
 const router = express.Router()
-
-router
-    .route('/addTestImage')
-    .patch(userController.addTestImage)
 
 router
     .route('/getUserData')
@@ -81,12 +77,25 @@ router
     .route('/getMessage/:user1Id/:user2Id')
     .get(getMessage)
 
+// ====== UPLOADS ====== //
 router
-    .route('/uploadImage/postImage')
-    .post(convertImage, uploadImage, updateProfilePhoto, savePost)
+    .route('/register/uploadImage')
+    .post(convertImage, uploadImage, updateProfileImageAndSaveAsPost)
 
 router
-    .route('/uploadVideo/postVideo')
+    .route('/register/uploadAadhar')
+    .post()
+
+router
+    .route('/upload/postImage')
+    .post(convertImage, uploadImage, savePost)
+
+router
+    .route('/upload/profileImage')
+    .post(convertImage, uploadImage, updateProfileImage)
+
+router
+    .route('/upload/postVideo')
     .post(upload.single('video'), compressAndUploadVideo)
 
 export default router
