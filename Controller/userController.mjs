@@ -204,12 +204,12 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'family.houseName': req.body?.houseName,
-            'family.homeTown': req.body?.homeTown,
-            'family.pincode': req.body?.pincode,
-            'family.homePhone': req.body?.homePhone,
-            'family.secondPhone': req.body?.secondPhone,
-            'family.diocese': req.body?.diocese,
+            'familyAddress.houseName': req.body?.houseName,
+            'familyAddress.homeTown': req.body?.homeTown,
+            'familyAddress.pincode': req.body?.pincode,
+            'familyAddress.homePhone': req.body?.homePhone,
+            'familyAddress.secondPhone': req.body?.secondPhone,
+            'familyAddress.diocese': req.body?.diocese,
         }
     }, { multi: true })
 
