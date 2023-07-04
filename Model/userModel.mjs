@@ -164,6 +164,11 @@ const userSchema = new mongoose.Schema({
         motherOccupation: {
             type: String
         },
+        siblings: {
+            type: Number
+        },
+    },
+    familyAddress: {
         houseName: {
             type: String
         },
@@ -182,9 +187,7 @@ const userSchema = new mongoose.Schema({
         diocese: {
             type: String
         },
-        siblings: {
-            type: Number
-        },
+        allowedUsers: [Types.ObjectId]
     },
     preferenceData: {
         age: {
@@ -211,18 +214,21 @@ const userSchema = new mongoose.Schema({
             type: String
         },
     },
-    userType: {
+    membershipType: {
         type: String,
         enum: ['Basic', 'Standard', 'Premium'],
         default: 'Basic'
     },
-    status: {
-        type: String,
-        default: 'Active'
+    membershipValidity: {
+        type: Date
     },
-    registartionStatus: {
-        type: [String],
-        default: ["About You", "Native", "Personal Info", "Academic", "Occupation", "Family", "Upload", "Verification"]
+    connectionsCount: {
+        type: Number,
+        default: 0
+    },
+    maxConnections: {
+        type: Number,
+        default: 0
     },
     favourites: [{
         type: Types.ObjectId,
@@ -232,6 +238,26 @@ const userSchema = new mongoose.Schema({
         type: Types.ObjectId,
         ref: 'User',
     }],
+    blockedProfiles: [{
+        type: Types.ObjectId,
+        ref: 'User',
+    }],
+    notInterested: [{
+        type: Types.ObjectId,
+        ref: 'User',
+    }],
+    status: {
+        type: String,
+        default: 'Active'
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    registartionStatus: {
+        type: [String],
+        default: ["About You", "Native", "Personal Info", "Academic", "Occupation", "Family", "Upload", "Verification"]
+    },
     password: {
         type: String,
         minlength: 8,

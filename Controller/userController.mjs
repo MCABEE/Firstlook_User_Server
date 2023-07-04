@@ -1,7 +1,9 @@
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
+import Aadhar from "../Model/aadharModel.mjs";
 import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
 
+//Get User data from db
 export const getUserDetails = catchAsync(async (req, res, next) => {
 
     const userId = req.query?.userId
@@ -11,6 +13,7 @@ export const getUserDetails = catchAsync(async (req, res, next) => {
 
 });
 
+//Save User About data to db
 export const addAboutYou = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -30,6 +33,7 @@ export const addAboutYou = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Native data to db
 export const addNative = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -48,6 +52,7 @@ export const addNative = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Personal data to db
 export const addPersonalInfo = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -69,6 +74,7 @@ export const addPersonalInfo = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Personal data to db
 export const addAdditionalPersonalInfo = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -89,6 +95,7 @@ export const addAdditionalPersonalInfo = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Academic data to db & update admin data of Institution
 export const addAcademic = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -137,6 +144,7 @@ export const addAcademic = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Occupation data to db
 export const addOccupation = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -157,6 +165,7 @@ export const addOccupation = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Occupation data to db
 export const addOccupationCategory = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -177,6 +186,7 @@ export const addOccupationCategory = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Family data to db
 export const addFamily = catchAsync(async (req, res, next) => {
 
     const userId = req.params.userId
@@ -198,18 +208,19 @@ export const addFamily = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Family Address data to db
 export const addFamilyAddress = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'family.houseName': req.body?.houseName,
-            'family.homeTown': req.body?.homeTown,
-            'family.pincode': req.body?.pincode,
-            'family.homePhone': req.body?.homePhone,
-            'family.secondPhone': req.body?.secondPhone,
-            'family.diocese': req.body?.diocese,
+            'familyAddress.houseName': req.body?.houseName,
+            'familyAddress.homeTown': req.body?.homeTown,
+            'familyAddress.pincode': req.body?.pincode,
+            'familyAddress.homePhone': req.body?.homePhone,
+            'familyAddress.secondPhone': req.body?.secondPhone,
+            'familyAddress.diocese': req.body?.diocese,
         }
     }, { multi: true })
 
@@ -218,6 +229,7 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User About data to db (Quick Signup)
 export const addAboutYouQuick = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -240,6 +252,7 @@ export const addAboutYouQuick = catchAsync(async (req, res, next) => {
     })
 });
 
+//Save User Native data to db (Quick Signup)
 export const addNativeQuick = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
@@ -263,3 +276,40 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
         status: "success"
     })
 });
+
+//Save Aadhar details to db
+export const addAadharDetails = catchAsync(async (req, res, next) => {
+    const userId = req.user
+
+    await Aadhar.create({
+        userId: userId,
+        aadharNumber: req.body?.aadharNumber,
+        fullName: req.body?.name,
+        dob: req.body?.date_of_birth,
+        fatherName: req.body?.care_of,
+        address: req.body?.locality
+    })
+
+    res.status(200).json({
+        status: "success"
+    })
+
+})
+
+//Save Aadhar image to db
+export const addAadharImage = catchAsync(async (req, res, next) => {
+    const userId = req.user
+    const post = req.post
+
+    await Aadhar.create({
+        userId: userId,
+        'images.sideOne.url': post?.url,
+        'images.sideOne.id': post?.id,
+        'images.sideTwo.url': post?.url,
+        'images.sideTwo.id': post?.id,
+    })
+
+    res.status(200).json({
+        status: "success"
+    })
+})

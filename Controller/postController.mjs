@@ -5,16 +5,16 @@ import axios from "axios";
 
 // Update user profile image and save as post
 export const updateProfileImageAndSaveAsPost = catchAsync(async (req, res) => {
-    const userId = req.user._id;
-    const image = req.post;
+    const userId = req.user?._id;
+    const image = req?.post;
 
-    await User.findByIdAndUpdate(userId, { $set: { 'profileImage.url': image.url, 'profileImage.id': image.id } })
+    await User.findByIdAndUpdate(userId, { $set: { 'profileImage.url': image?.url, 'profileImage.id': image?.id } })
 
     await Post.create({
         userId,
         content: {
-            url: image.url,
-            id: image.id
+            url: image?.url,
+            id: image?.id
         },
     })
 
@@ -23,10 +23,10 @@ export const updateProfileImageAndSaveAsPost = catchAsync(async (req, res) => {
 
 // Update user profile image
 export const updateProfileImage = catchAsync(async (req, res) => {
-    const userId = req.user._id;
-    const image = req.post;
+    const userId = req.user?._id;
+    const image = req?.post;
     const existingImg = await User.findById(userId, { profileImage: 1 })
-    await User.findByIdAndUpdate(userId, { $set: { 'profileImage.url': image.url, 'profileImage.id': image.id } })
+    await User.findByIdAndUpdate(userId, { $set: { 'profileImage.url': image?.url, 'profileImage.id': image?.id } })
     
     // delete old profile image
     if (existingImg?.profileImage.id) {
@@ -38,16 +38,16 @@ export const updateProfileImage = catchAsync(async (req, res) => {
 
 // Save new post to db
 export const savePost = catchAsync(async (req, res) => {
-    const userId = req.user._id;
-    const post = req.post;
+    const userId = req.user?._id;
+    const post = req?.post;
 
     await Post.create({
         userId,
         content: {
-            url: post.url,
-            id: post.id
+            url: post?.url,
+            id: post?.id
         },
-        contentType: post.type
+        contentType: post?.type
     })
 
     res.sendStatus(201);

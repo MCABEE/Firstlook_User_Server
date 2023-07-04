@@ -14,8 +14,25 @@ const postSchema = new Schema({
         type: String,
         enum: ['image', 'video'],
         default: 'image'
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    verification: {
+        verified: {
+            type: Boolean,
+            default: false
+        },
+        verifiedBy: {
+            type: Types.ObjectId,
+            ref: 'Admin'
+        },
+        verificationDate: {
+            type: Date
+        },
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
 const Post = model('Post', postSchema);
 export default Post;

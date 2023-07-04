@@ -2,6 +2,7 @@ import Message from "../Model/messageModel.mjs";
 import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
 
+//Save Chat messages send between user's to db
 export const chat = catchAsync(async (req, res, next) => {
     console.log(req.body);
     const { from, to, message } = req.body
@@ -17,6 +18,7 @@ export const chat = catchAsync(async (req, res, next) => {
     })
 })
 
+//Get the connection between User's
 export const getConnectionsUser = catchAsync(async (req, res, next) => {
 
     const userId = req.params.userId
@@ -56,6 +58,7 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
     res.status(200).json({ sortedUsers, connectionCount })
 })
 
+//Get the messages send between User's
 export const getMessage = catchAsync(async (req, res, next) => {
     const from = req.params.user1Id
     const to = req.params.user2Id
