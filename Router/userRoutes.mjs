@@ -5,8 +5,6 @@ import { createRndomTestUsers, deleteTestUsers } from '../Controller/testDataCon
 import { chat, getMessage } from '../Controller/chatController.mjs'
 import { uploadImage } from '../Cloudflare/imageUploader.mjs'
 import { convertImage } from '../Cloudflare/imageConvert.mjs'
-import { compressAndUploadVideo } from '../Cloudflare/videoUploader.mjs'
-import { upload } from '../Cloudflare/videoConverter.mjs'
 import { getUserDetails } from '../Controller/userController.mjs'
 import { savePost, updateProfileImage, updateProfileImageAndSaveAsPost } from '../Controller/postController.mjs'
 
@@ -77,14 +75,18 @@ router
     .route('/getMessage/:user1Id/:user2Id')
     .get(getMessage)
 
+router
+    .route('/register/uploadAadhar')
+    .post(userController.addAadharDetails)
+
 // ====== UPLOADS ====== //
 router
     .route('/register/uploadImage')
     .post(convertImage, uploadImage, updateProfileImageAndSaveAsPost)
 
 router
-    .route('/register/uploadAadhar')
-    .post()
+    .route('/register/uploadAadharImage')
+    .post(convertImage, uploadImage, userController.addAadharImage)
 
 router
     .route('/upload/postImage')
@@ -93,9 +95,5 @@ router
 router
     .route('/upload/profileImage')
     .post(convertImage, uploadImage, updateProfileImage)
-
-router
-    .route('/upload/postVideo')
-    .post(upload.single('video'), compressAndUploadVideo)
 
 export default router
