@@ -1,7 +1,7 @@
 import { Schema, Types, model } from 'mongoose';
 
 const addressRequestSchema = new Schema({
-    requestedUserId: {
+    requestedBy: {
         type: Types.ObjectId,
         ref: 'User',
         required: true
@@ -11,7 +11,7 @@ const addressRequestSchema = new Schema({
         ref: 'User',
         required: true
     },
-    requestStatus: {
+    status: {
         type: String,
         enum: ['Approved', 'Not Approved'],
         default: "Not Approved"

@@ -238,17 +238,21 @@ const userSchema = new mongoose.Schema({
         type: Types.ObjectId,
         ref: 'User',
     }],
-    blockedProfiles: {
+    blockedProfiles: [{
         type: Types.ObjectId,
         ref: 'User',
-    },
-    notInterested: {
+    }],
+    notInterested: [{
         type: Types.ObjectId,
         ref: 'User',
-    },
+    }],
     status: {
         type: String,
         default: 'Active'
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     },
     registartionStatus: {
         type: [String],

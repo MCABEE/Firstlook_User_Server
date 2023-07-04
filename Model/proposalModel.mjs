@@ -1,7 +1,7 @@
 import { Schema, Types, model } from 'mongoose';
 
 const proposalSchema = new Schema({
-    proposerId: {
+    proposedBy: {
         type: Types.ObjectId,
         ref: 'User',
         required: true
@@ -10,6 +10,10 @@ const proposalSchema = new Schema({
         type: Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    status: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 
