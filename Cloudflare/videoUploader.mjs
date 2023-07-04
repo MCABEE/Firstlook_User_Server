@@ -4,7 +4,7 @@ import catchAsync from "../utils/catchAsync.mjs";
 import axios from "axios";
 import Post from '../Model/postModel.mjs';
 
-export const compressAndUploadVideo = catchAsync(async (req, res, next) => {
+export const uploadVideo = catchAsync(async (req, res, next) => {
 
     const videoFile = req.file;
     if (!videoFile) {
