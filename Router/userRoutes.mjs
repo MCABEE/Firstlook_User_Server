@@ -7,6 +7,7 @@ import { uploadImage } from '../Cloudflare/imageUploader.mjs'
 import { convertImage } from '../Cloudflare/imageConvert.mjs'
 import { getUserDetails } from '../Controller/userController.mjs'
 import { savePost, updateProfileImage, updateProfileImageAndSaveAsPost } from '../Controller/postController.mjs'
+import videoConverter from '../Cloudflare/videoConverter.mjs'
 
 const router = express.Router()
 
@@ -95,5 +96,9 @@ router
 router
     .route('/upload/profileImage')
     .post(convertImage, uploadImage, updateProfileImage)
+
+router
+    .route('/upload/postVideo')
+    .post(videoConverter, compressAndUploadVideo)
 
 export default router
