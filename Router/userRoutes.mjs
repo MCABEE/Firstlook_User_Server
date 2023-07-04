@@ -100,6 +100,6 @@ router
 
 router
     .route('/upload/postVideo')
-    .post(videoConverter, uploadVideo)
+    .post(videoConverter, uploadVideo, savePost)
 
 export default router
