@@ -6,9 +6,10 @@ import catchAsync from "../utils/catchAsync.mjs";
 //Get User data from db
 export const getUserDetails = catchAsync(async (req, res, next) => {
 
-    const userId = req.query?.userId
+    const userId = req.user
 
-    const userData = await User.findById(userId)
+    const userData = await User.findOne({ _id: userId})
+    console.log(userData)
     res.status(200).json({ userData });
 
 });
