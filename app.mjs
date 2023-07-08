@@ -30,7 +30,7 @@ app.get('/', (req, res) => res.status(200).json({ message: 'OK' }))
 // api endpoints 
 app.use('/auth/v1', authRouter)
 app.use('/user/v1', protectRoute, userRouter)
-app.use('/data/general', protectRoute, adminRouter)
+app.use('/data/general', adminRouter)
 
 // Error Handler
 app.use(() => { throw new AppError({ statusCode: 404, message: 'Route not found!' }) })

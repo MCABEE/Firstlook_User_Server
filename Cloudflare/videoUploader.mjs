@@ -30,15 +30,8 @@ export const uploadVideo = catchAsync(async (req, res, next) => {
     // delete the local image file
     fs.unlinkSync(videoFile.path);
 
-    // SAVE AS POST
-    await Post.create({
-        userId: req.user._id,
-        content: {
-            url: data.result.preview,
-            id: data.result.uid,
-        },
-        contentType: 'video',
-    })
+    req.post = { url: data.result.preview, id: data.result.uid, type: 'video' }
 
-    res.status(201).json({ data })
+    // passing to next middleware to save the post in db
+    next();
 });

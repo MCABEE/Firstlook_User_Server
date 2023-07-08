@@ -24,6 +24,10 @@ const aadharSchema = new mongoose.Schema({
     images: {
         sideOne: { url: String, id: String },
         sideTwo: { url: String, id: String },
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 
