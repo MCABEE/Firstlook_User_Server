@@ -25,9 +25,18 @@ const aadharSchema = new mongoose.Schema({
         sideOne: { url: String, id: String },
         sideTwo: { url: String, id: String },
     },
-    isVerified: {
-        type: Boolean,
-        default: false
+    verification: {
+        verified: {
+            type: Boolean,
+            default: false
+        },
+        verifiedBy: {
+            type: Types.ObjectId,
+            ref: 'Admin'
+        },
+        verificationDate: {
+            type: Date
+        },
     }
 }, { timestamps: true })
 

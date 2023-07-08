@@ -1,6 +1,7 @@
 import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
 import { client } from "../server.mjs";
+import Post from "../Model/postModel.mjs";
 
 export const cacheProfiles = catchAsync(async (req, res, next) => {
 
@@ -19,7 +20,7 @@ export const matchingProfile = catchAsync(async (req, res) => {
 
     const userId = req.params.userId
     const user = await User.findById(userId)
-    
+
     const oppositeGender = user.gender === 'male' ? 'female' : 'male';
     const minAge = oppositeGender === 'male' ? calculateAge(user.dob) : 18;
     const maxAge = oppositeGender === 'male' ? 40 : calculateAge(user.dob);
@@ -82,9 +83,15 @@ export const matchingProfile = catchAsync(async (req, res) => {
     // sort profiles based on compatibility score
     const sortedProfiles = await sortProfilesByScore(user, matchingProfiles)
 
+    // Get the userId values from sortedProfiles
+    const userIds = sortedProfiles.map((profile) => profile._id);
+
+    // Find all the posts that match the userIds
+    const matchingPosts = await Post.find({ userId: { $in: userIds } });
+
     // caching
     client.set(`matchingProfiles:${userId}`, JSON.stringify(sortedProfiles))
-    res.status(200).json({ from: 'DB', count: matchingProfiles.length, matches: sortedProfiles })
+    res.status(200).json({ from: 'DB', count: matchingProfiles.length, matches: sortedProfiles, matchingPosts })
 })
 
 
