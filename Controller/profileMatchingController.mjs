@@ -87,11 +87,15 @@ export const matchingProfile = catchAsync(async (req, res) => {
     const userIds = sortedProfiles.map((profile) => profile._id);
 
     // Find all the posts that match the userIds
-    const matchingPosts = await Post.find({ userId: { $in: userIds } });
+    const matchingPosts = await Post.find({ userId: { $in: userIds } }).populate({
+        path: 'userId',
+        model: 'User',
+        select: { 'occupation.designation': 1, 'occupation.city': 1, native: 1, dob: 1, 'personalInfo.religion': 1, 'personalInfo.caste': 1, displayName: 1, profileImage: 1 }
+    })
 
     // caching
-    client.set(`matchingProfiles:${userId}`, JSON.stringify(sortedProfiles))
-    res.status(200).json({ from: 'DB', count: matchingProfiles.length, matches: sortedProfiles, matchingPosts })
+    // client.set(`matchingProfiles:${userId}`, JSON.stringify(matchingPosts))
+    res.status(200).json({ from: 'DB', count: matchingProfiles.length, post: matchingPosts })
 })
 
 
