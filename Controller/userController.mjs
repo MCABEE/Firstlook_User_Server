@@ -2,13 +2,14 @@ import Institution from "../Model/Admin/institutions/institutionModel.mjs";
 import Aadhar from "../Model/aadharModel.mjs";
 import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
+// import { faker } from '@faker-js/faker'
 
 //Get User data from db
 export const getUserDetails = catchAsync(async (req, res, next) => {
 
     const userId = req.user
 
-    const userData = await User.findOne({ _id: userId})
+    const userData = await User.findOne({ _id: userId })
     console.log(userData)
     res.status(200).json({ userData });
 
@@ -314,3 +315,20 @@ export const addAadharImage = catchAsync(async (req, res, next) => {
         status: "success"
     })
 })
+
+// export const addPostsTest = catchAsync(async (req, res, next) => {
+//     const users = await User.find().skip(100).limit(500);
+
+//     for (const user of users) {
+//         await Post.create({
+//             userId: user._id,
+//             content: {
+//                 url: faker.image.url(), // Generate a random image URL
+//                 id: Math.random()
+//             },
+//             // Set any other properties for the post as needed
+//         });
+//     }
+
+//     res.sendStatus(201)
+// })
