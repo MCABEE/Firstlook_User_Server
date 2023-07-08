@@ -31,7 +31,7 @@ const aadharSchema = new mongoose.Schema({
             default: false
         },
         verifiedBy: {
-            type: Types.ObjectId,
+            type: Objectid,
             ref: 'Admin'
         },
         verificationDate: {
