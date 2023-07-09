@@ -26,8 +26,8 @@ export const addAboutYou = catchAsync(async (req, res, next) => {
             lastName: req.body?.lastName,
             displayName: req.body?.displayName,
             dob: req.body?.dob,
-            gender: req.body?.gender,
-        }
+            gender: req.body?.gender
+        }, $pull: { registartionStatus: "About You"}
     }, { multi: true })
 
     res.status(200).json({
@@ -46,7 +46,7 @@ export const addNative = catchAsync(async (req, res, next) => {
             'native.district': req.body?.district,
             'native.state': req.body?.state,
             'native.motherTongue': req.body?.motherToungue,
-        }
+        }, $pull: { registartionStatus: "Native"}
     }, { multi: true })
 
     res.status(200).json({
@@ -68,7 +68,7 @@ export const addPersonalInfo = catchAsync(async (req, res, next) => {
             'personalInfo.weight': req.body?.weight,
             'personalInfo.bodyType': req.body?.bodyType,
             'personalInfo.physicalStatus': req.body?.physicalStatus,
-        }
+        }, $pull: { registartionStatus: "Personal Info"}
     }, { multi: true })
 
     res.status(200).json({
@@ -89,7 +89,7 @@ export const addAdditionalPersonalInfo = catchAsync(async (req, res, next) => {
             'personalInfo.bloodGroup': req.body?.bloodGroup,
             'personalInfo.license': req.body?.license,
             'personalInfo.financialStatus': req.body?.financialStatus,
-        }
+        }, $pull: { registartionStatus: "Personal Info2"}
     }, { multi: true })
 
     res.status(200).json({
@@ -112,7 +112,7 @@ export const addAcademic = catchAsync(async (req, res, next) => {
             'academic.institute': req.body?.institute,
             'academic.college': req.body?.college,
             'academic.passOut': req.body?.passYear,
-        }
+        }, $pull: { registartionStatus: "Academic"}
     }, { multi: true })
 
     if (req.body?.university) {
@@ -159,7 +159,7 @@ export const addOccupation = catchAsync(async (req, res, next) => {
             'occupation.district': req.body?.district,
             'occupation.city': req.body?.city,
             'occupation.annualIncome': req.body?.annualIncome,
-        }
+        }, $pull: { registartionStatus: "Occupation"}
     }, { multi: true })
 
     res.status(200).json({
@@ -180,7 +180,7 @@ export const addOccupationCategory = catchAsync(async (req, res, next) => {
             'occupation.jobStream': req.body?.stream,
             'occupation.department': req.body?.department,
             'occupation.companyName': req.body?.companyName,
-        }
+        }, $pull: { registartionStatus: "Occupation2"}
     }, { multi: true })
 
     res.status(200).json({
@@ -202,7 +202,7 @@ export const addFamily = catchAsync(async (req, res, next) => {
             'family.motherEducation': req.body?.motherEducation,
             'family.motherOccupation': req.body?.motherOccupation,
             'family.siblings': req.body?.siblings,
-        }
+        }, $pull: { registartionStatus: "Family"}
     }, { multi: true })
 
     res.status(200).json({
@@ -223,7 +223,7 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
             'familyAddress.homePhone': req.body?.homePhone,
             'familyAddress.secondPhone': req.body?.secondPhone,
             'familyAddress.diocese': req.body?.diocese,
-        }
+        }, $pull: { registartionStatus: "Family2"}
     }, { multi: true })
 
     res.status(200).json({
