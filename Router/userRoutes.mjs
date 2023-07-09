@@ -2,7 +2,7 @@ import express from 'express'
 import * as userController from '../Controller/userController.mjs'
 import * as profileMatchingController from '../Controller/profileMatchingController.mjs'
 import { createRndomTestUsers, deleteTestUsers } from '../Controller/testDataController.mjs'
-import { chat, getMessage } from '../Controller/chatController.mjs'
+import { chat, getConnectionsUser, getMessage } from '../Controller/chatController.mjs'
 import { uploadImage } from '../Cloudflare/imageUploader.mjs'
 import { convertImage } from '../Cloudflare/imageConvert.mjs'
 import { getUserDetails } from '../Controller/userController.mjs'
@@ -68,6 +68,10 @@ router
 router
     .route('/register/:userId/addNativeQuick')
     .patch(userController.addNativeQuick)
+
+router
+    .route('/getConnections')
+    .get(getConnectionsUser)
 
 router
     .route('/chat')

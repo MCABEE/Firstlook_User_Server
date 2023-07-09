@@ -22,21 +22,19 @@ export const chat = catchAsync(async (req, res, next) => {
 //Get the connection between User's
 export const getConnectionsUser = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.user._id.toString()
     let connectionCount = []
     const connections = await Message.find({ chatUsers: userId }).sort({ createdAt: -1 })
-    const connection = new Set();
+    const connection = [];
 
     connections.map((message) => {
         const chatUsers = message.chatUsers
         const otherUsers = Object.values(chatUsers).filter((id) => id.toString() !== userId.toString());
-        connection.add(...otherUsers);
+        connection.push(...otherUsers);
 
     });
-
-    const users = await User.find({ _id: { $in: connection } })
-
-    const sortedUsers = connection.map(id => users.find(user => user._id.toString() === id));
+    const uniqueConnections = [...new Set(connection)];
+    const users = await User.find({ _id: { $in: uniqueConnections } }).select({ displayName: 1, profileImage: 1 })
 
     const messages = await Message.find({ chatUsers: userId, sender: { $ne: userId }, read: false });
     const counts = {};
@@ -54,7 +52,7 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
         results.map((data) => user._id == data.userId ? connectionCount.push(data) : null)
     })
 
-    res.status(200).json({ sortedUsers, connectionCount })
+    res.status(200).json({ connections: users, connectionCount })
 })
 
 //Get the messages send between User's
