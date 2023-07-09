@@ -21,7 +21,7 @@ export const chat = catchAsync(async (req, res, next) => {
 //Get the connection between User's
 export const getConnectionsUser = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId
+    const userId = req.user._id.toString()
     let connectionCount = []
     const connections = await Message.find({ chatUsers: userId }).sort({ createdAt: -1 })
     const connection = [];
@@ -32,14 +32,10 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
         connection.push(...otherUsers);
 
     });
-
     const uniqueConnections = [...new Set(connection)];
+    const users = await User.find({ _id: { $in: uniqueConnections } }).select({ displayName: 1, profileImage: 1 })
 
-    const users = await User.find({ _id: { $in: uniqueConnections } })
-
-    const sortedUsers = uniqueConnections.map(id => users.find(user => user._id.toString() === id));
-
-    const messages = await Message.find({ chatUsers: userId, sender: { $ne: userId },  read: false });
+    const messages = await Message.find({ chatUsers: userId, sender: { $ne: userId }, read: false });
     const counts = {};
     messages.forEach(message => {
         message.chatUsers.forEach(userId => {
@@ -55,21 +51,23 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
         results.map((data) => user._id == data.userId ? connectionCount.push(data) : null)
     })
 
-    res.status(200).json({ sortedUsers, connectionCount })
+    res.status(200).json({ connections: users, connectionCount })
 })
 
 //Get the messages send between User's
 export const getMessage = catchAsync(async (req, res, next) => {
-    const from = req.params.user1Id
-    const to = req.params.user2Id
+    const from = req.user._id.toString()
+    const to = req.params.to
 
-    const newMessage = await Message.find({
+    console.log({ from, to });
+
+    const messages = await Message.find({
         chatUsers: {
             $all: [from, to]
         }
     }).sort({ createdAt: 1 })
 
-    const allMessage = newMessage.map((msg) => {
+    const allMessage = messages.map((msg) => {
         return {
             myself: msg.sender.toString() === from,
             message: msg.message,
@@ -78,7 +76,7 @@ export const getMessage = catchAsync(async (req, res, next) => {
     })
     await Message.updateMany({ chatUsers: { $all: [from, to] }, sender: { $ne: from } }, { $set: { read: true } })
 
-    res.status(200).json(allMessage)
+    res.status(200).json({ allMessage })
 })
 
 //Save Chat request to db
