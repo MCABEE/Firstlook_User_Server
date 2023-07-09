@@ -11,7 +11,7 @@ export const uploadImage = catchAsync(async (req, res, next) => {
     if (!imageFile) throw new AppError({ statusCode: 400, message: 'Image upload failed' })
 
     // Read the image file as binary data
-    const basePath = 'Uploads/' + imageFile;
+    const basePath = req.file;
 
     fs.readFile(basePath, async (err, data) => {
 
@@ -43,10 +43,9 @@ export const uploadImage = catchAsync(async (req, res, next) => {
 
         // delete the local image file
         fs.unlinkSync(req.file);
-        
+
         req.post = { url: imageUrl, id: imageId, type: 'image' }
         next();
-
     });
 
 })

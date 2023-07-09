@@ -13,6 +13,7 @@ import Caste from "../Model/Admin/religion/casteModel.mjs";
 import Religion from "../Model/Admin/religion/religionModel.mjs";
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
 import catchAsync from '../utils/catchAsync.mjs';
+import Employer from "../Model/Admin/employer/employerModel.mjs";
 
 export const getCountries = catchAsync(async (req, res, next) => {
 
@@ -190,5 +191,14 @@ export const getOccupationStream = catchAsync(async (req, res, next) => {
     const query = category ? { category } : {}
     const occupationStream = await OccupationStream.find(query)
     res.status(200).json({ occupationStream });
+
+});
+
+export const getEmployerName = catchAsync(async (req, res, next) => {
+
+    const category = req.query?.category
+    const query = category ? { category } : {}
+    const employerName = await Employer.find(query)
+    res.status(200).json({ employerName })
 
 });

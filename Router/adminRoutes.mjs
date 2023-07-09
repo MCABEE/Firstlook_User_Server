@@ -67,4 +67,8 @@ router
     .route('/getAllJobStreams')
     .get(appController.getOccupationStream)
 
+router
+    .route('/getEmployerDetails')
+    .get(appController.getEmployerName)
+
 export default router
