@@ -194,10 +194,6 @@ const userSchema = new mongoose.Schema({
             minAge: Number,
             maxAge: Number,
         },
-        height: {
-            minHeight: Number,
-            maxHeight: Number,
-        },
         caste: {
             type: String
         },
@@ -256,7 +252,7 @@ const userSchema = new mongoose.Schema({
     },
     registartionStatus: {
         type: [String],
-        default: ["About You", "Native", "Personal Info", "Academic", "Occupation", "Family", "Upload", "Verification"]
+        default: ["About You", "Native", "Personal Info", "Personal Info2", "Academic", "Occupation", "Occupation2", "Family", "Family2", "Upload", "Verification", "Verification2"]
     },
     password: {
         type: String,
