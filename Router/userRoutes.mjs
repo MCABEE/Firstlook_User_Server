@@ -9,6 +9,8 @@ import { getUserDetails } from '../Controller/userController.mjs'
 import { savePost, updateProfileImage, updateProfileImageAndSaveAsPost } from '../Controller/postController.mjs'
 import videoConverter from '../Cloudflare/videoConverter.mjs'
 import { uploadVideo } from '../Cloudflare/videoUploader.mjs'
+import { aadharImageCoverter } from '../Cloudflare/aadharImageCoverter.mjs'
+import { aadharImageUploader } from '../Cloudflare/aadharImageUploader.mjs'
 
 const router = express.Router()
 
@@ -88,7 +90,7 @@ router
 
 router
     .route('/register/uploadAadharImage')
-    .post(convertImage, uploadImage, userController.addAadharImage)
+    .post(aadharImageCoverter, aadharImageUploader)
 
 router
     .route('/upload/postImage')

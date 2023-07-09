@@ -298,24 +298,6 @@ export const addAadharDetails = catchAsync(async (req, res, next) => {
 
 })
 
-//Save Aadhar image to db
-export const addAadharImage = catchAsync(async (req, res, next) => {
-    const userId = req.user
-    const post = req.post
-
-    await Aadhar.create({
-        userId: userId,
-        'images.sideOne.url': post?.url,
-        'images.sideOne.id': post?.id,
-        'images.sideTwo.url': post?.url,
-        'images.sideTwo.id': post?.id,
-    })
-
-    res.status(200).json({
-        status: "success"
-    })
-})
-
 // export const addPostsTest = catchAsync(async (req, res, next) => {
 //     const users = await User.find().skip(100).limit(500);
 
