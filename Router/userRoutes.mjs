@@ -74,7 +74,7 @@ router
     .post(chat)
 
 router
-    .route('/getMessage/:user1Id/:user2Id')
+    .route('/getMessage/:to')
     .get(getMessage)
 
 router

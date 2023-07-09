@@ -59,8 +59,8 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
 
 //Get the messages send between User's
 export const getMessage = catchAsync(async (req, res, next) => {
-    const from = req.params.user1Id
-    const to = req.params.user2Id
+    const from = req.user._id
+    const to = req.params.to
 
     const newMessage = await Message.find({
         chatUsers: {
