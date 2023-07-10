@@ -2,18 +2,14 @@ import mongoose, { Types } from 'mongoose'
 
 const pincodeSchema = new mongoose.Schema({
 
-    district: { 
-        type: Types.ObjectId, 
-        ref:'District',
-        required: true 
+    district: {
+        type: Types.ObjectId,
+        ref: 'District',
+        required: true
     },
-    code: { 
-        type: Number, 
-        required: true 
-    },
-    postOffice: { 
-        type: String, 
-        required: true,
+    code: {
+        type: Number,
+        required: true
     }
 
 })
