@@ -7,12 +7,21 @@ import catchAsync from "../utils/catchAsync.mjs";
 //Get User data from db
 export const getUserDetails = catchAsync(async (req, res, next) => {
 
-    const userId = req.user
+    const userId = req.params?.userId
 
     const userData = await User.findOne({ _id: userId })
-    console.log(userData)
-    res.status(200).json({ userData });
 
+    res.status(200).json({ userData });
+});
+
+//Get Logged User data from db
+export const getMyProfile = catchAsync(async (req, res, next) => {
+
+    const userId = req.user?._id
+
+    const userData = await User.findOne({ _id: userId })
+
+    res.status(200).json({ userData });
 });
 
 //Save User About data to db

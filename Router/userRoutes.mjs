@@ -15,7 +15,11 @@ import { aadharImageUploader } from '../Cloudflare/aadharImageUploader.mjs'
 const router = express.Router()
 
 router
-    .route('/getUserData')
+    .route('/getUserData/:userId')
+    .get(getUserDetails)
+
+router
+    .route('/getLoggedUserData')
     .get(getUserDetails)
 
 router
