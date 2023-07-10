@@ -3,6 +3,8 @@ import Employer from "../Model/Admin/employer/employerModel.mjs";
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
 import Designation from "../Model/Admin/occupation/designationModel.mjs";
 import City from "../Model/Admin/places/cityModel.mjs";
+import HomeTown from "../Model/Admin/places/homeTownModel.mjs";
+import Pincode from "../Model/Admin/places/pincodeModel.mjs";
 import Aadhar from "../Model/aadharModel.mjs";
 import Post from "../Model/postModel.mjs";
 import User from "../Model/userModel.mjs";
@@ -289,14 +291,29 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
-            'familyAddress.houseName': req.body?.houseName,
+            'familyAddress.houseName': req.body?.familyName,
             'familyAddress.homeTown': req.body?.homeTown,
             'familyAddress.pincode': req.body?.pincode,
-            'familyAddress.homePhone': req.body?.homePhone,
-            'familyAddress.secondPhone': req.body?.secondPhone,
-            'familyAddress.diocese': req.body?.diocese,
+            'familyAddress.homePhone': req.body?.contactNumber,
+            'familyAddress.secondPhone': req.body?.homeContactNumber,
         }, $pull: { registartionStatus: "Family2"}
     }, { multi: true })
+
+    if (req.body?.pincode) {
+        const existingPincodes = await Pincode.findOne({ name: req.body?.pincode });
+
+        if (!existingPincodes) {
+            await Pincode.create({ district: req.body?.districtId, code: req.body?.pincode });
+        }
+    }
+
+    if (req.body?.homeTown) {
+        const existingHomeTowns = await HomeTown.findOne({ name: req.body?.homeTown });
+
+        if (!existingHomeTowns) {
+            await HomeTown.create({ district: req.body?.districtId, name: req.body?.homeTown });
+        }
+    }
 
     res.status(200).json({
         status: "success"

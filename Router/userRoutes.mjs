@@ -34,6 +34,10 @@ router
     .post(createRndomTestUsers)
     .delete(deleteTestUsers)
 
+// router
+//     .route('/testPost')
+//     .post(userController.addPostsTest)
+
 router
     .route('/matchingProfiles')
     .get(profileMatchingController.cacheProfiles, profileMatchingController.matchingProfile)
