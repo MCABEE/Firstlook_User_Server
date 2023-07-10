@@ -5,7 +5,6 @@ import { createRndomTestUsers, deleteTestUsers } from '../Controller/testDataCon
 import { chat, getConnectionsUser, getMessage } from '../Controller/chatController.mjs'
 import { uploadImage } from '../Cloudflare/imageUploader.mjs'
 import { convertImage } from '../Cloudflare/imageConvert.mjs'
-import { getUserDetails } from '../Controller/userController.mjs'
 import { savePost, updateProfileImage, updateProfileImageAndSaveAsPost } from '../Controller/postController.mjs'
 import videoConverter from '../Cloudflare/videoConverter.mjs'
 import { uploadVideo } from '../Cloudflare/videoUploader.mjs'
@@ -16,11 +15,19 @@ const router = express.Router()
 
 router
     .route('/getUserData/:userId')
-    .get(getUserDetails)
+    .get(userController.getUserDetails)
 
 router
     .route('/getLoggedUserData')
-    .get(getUserDetails)
+    .get(userController.getMyProfile)
+
+router
+    .route('/getLoggedUserPosts')
+    .get(userController.getMyPosts)
+
+router
+    .route('/getUserPosts/:userId')
+    .get(userController.getUserPosts)
 
 router
     .route('/testUsers')

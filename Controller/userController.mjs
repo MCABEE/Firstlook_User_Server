@@ -1,5 +1,6 @@
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
 import Aadhar from "../Model/aadharModel.mjs";
+import Post from "../Model/postModel.mjs";
 import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
 // import { faker } from '@faker-js/faker'
@@ -22,6 +23,26 @@ export const getMyProfile = catchAsync(async (req, res, next) => {
     const userData = await User.findOne({ _id: userId })
 
     res.status(200).json({ userData });
+});
+
+//Get Logged User Posts from db
+export const getMyPosts = catchAsync(async (req, res, next) => {
+
+    const userId = req.user?._id
+
+    const userPosts = await Post.find({ userId })
+
+    res.status(200).json({ userPosts });
+});
+
+//Get User Posts from db
+export const getUserPosts = catchAsync(async (req, res, next) => {
+
+    const userId = req.params?.userId
+
+    const userPosts = await Post.find({ userId })
+
+    res.status(200).json({ userPosts });
 });
 
 //Save User About data to db
