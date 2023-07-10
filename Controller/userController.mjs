@@ -1,4 +1,8 @@
+import Course from "../Model/Admin/academic/courseModel.mjs";
+import Employer from "../Model/Admin/employer/employerModel.mjs";
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
+import Designation from "../Model/Admin/occupation/designationModel.mjs";
+import City from "../Model/Admin/places/cityModel.mjs";
 import Aadhar from "../Model/aadharModel.mjs";
 import Post from "../Model/postModel.mjs";
 import User from "../Model/userModel.mjs";
@@ -149,7 +153,7 @@ export const addAcademic = catchAsync(async (req, res, next) => {
         const existingUniversity = await Institution.findOne({ name: req.body?.university });
 
         if (!existingUniversity) {
-            const uni = await Institution.create({ country: req.body?.country, name: req.body?.university, type: 'university' });
+            await Institution.create({ country: req.body?.country, name: req.body?.university, type: 'university' });
         }
     }
 
@@ -157,8 +161,7 @@ export const addAcademic = catchAsync(async (req, res, next) => {
         const existingCollege = await Institution.findOne({ name: req.body?.college });
 
         if (!existingCollege) {
-            const det = await Institution.create({ country: req.body?.country, name: req.body?.college, type: 'college' });
-            console.log(det)
+            await Institution.create({ country: req.body?.country, name: req.body?.college, type: 'college' });
         }
     }
 
@@ -166,8 +169,15 @@ export const addAcademic = catchAsync(async (req, res, next) => {
         const existingInstitute = await Institution.findOne({ name: req.body?.institute });
 
         if (!existingInstitute) {
-            const was = await Institution.create({ country: req.body?.country, name: req.body?.institute, type: 'institute' });
-            console.log(was)
+            await Institution.create({ country: req.body?.country, name: req.body?.institute, type: 'institute' });
+        }
+    }
+
+    if (req.body?.courseName) {
+        const existingCourseName = await Course.findOne({ name: req.body?.courseName });
+
+        if (!existingCourseName) {
+            await Course.create({ stream: req.body?.academicStream, name: req.body?.courseName });
         }
     }
 
@@ -192,6 +202,14 @@ export const addOccupation = catchAsync(async (req, res, next) => {
         }, $pull: { registartionStatus: "Occupation"}
     }, { multi: true })
 
+    if (req.body?.city) {
+        const existingCity = await City.findOne({ name: req.body?.city });
+
+        if (!existingCity) {
+            await City.create({ state: req.body?.stateID, name: req.body?.city });
+        }
+    }
+
     res.status(200).json({
         status: "success"
     })
@@ -208,10 +226,34 @@ export const addOccupationCategory = catchAsync(async (req, res, next) => {
             'occupation.jobCategory': req.body?.jobCategory,
             'occupation.jobType': req.body?.jobType,
             'occupation.jobStream': req.body?.stream,
-            'occupation.department': req.body?.department,
+            'occupation.employer': req.body?.employerName,
             'occupation.companyName': req.body?.companyName,
         }, $pull: { registartionStatus: "Occupation2"}
     }, { multi: true })
+
+    if (req.body?.designation) {
+        const existingDesignation = await Designation.findOne({ name: req.body?.designation });
+
+        if (!existingDesignation) {
+            await Designation.create({ category: req.body?.jobCategory, name: req.body?.designation });
+        }
+    }
+
+    if (req.body?.companyName) {
+        const existingCompanyName = await Employer.findOne({ name: req.body?.companyName });
+
+        if (!existingCompanyName) {
+            await Employer.create({ category: req.body?.jobCategory, name: req.body?.companyName });
+        }
+    }
+
+    if (req.body?.employerName) {
+        const existingEmployers = await Employer.findOne({ name: req.body?.employerName });
+
+        if (!existingEmployers) {
+            await Employer.create({ category: req.body?.jobCategory, name: req.body?.employerName });
+        }
+    }
 
     res.status(200).json({
         status: "success"

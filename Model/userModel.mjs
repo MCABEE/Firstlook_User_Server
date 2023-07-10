@@ -98,7 +98,7 @@ const userSchema = new mongoose.Schema({
         jobStream: {
             type: String
         },
-        department: {
+        employer: {
             type: String
         },
         companyName: {
