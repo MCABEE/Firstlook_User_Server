@@ -7,11 +7,11 @@ import fs from 'fs'
 
 export const uploadImage = catchAsync(async (req, res, next) => {
 
-    const imageFile = path.basename(req.file);
+    const imageFile = path.basename(req?.file);
     if (!imageFile) throw new AppError({ statusCode: 400, message: 'Image upload failed' })
 
     // Read the image file as binary data
-    const basePath = req.file;
+    const basePath = req?.file;
 
     fs.readFile(basePath, async (err, data) => {
 
@@ -38,11 +38,11 @@ export const uploadImage = catchAsync(async (req, res, next) => {
         const response = await axios.request(options)
 
         // Extract the Cloudflare media URL from the response
-        const imageUrl = response.data.result.variants[0]
-        const imageId = response.data.result.id
+        const imageUrl = response.data.result?.variants[0]
+        const imageId = response.data.result?.id
 
         // delete the local image file
-        fs.unlinkSync(req.file);
+        fs.unlinkSync(req?.file);
 
         req.post = { url: imageUrl, id: imageId, type: 'image' }
         next();

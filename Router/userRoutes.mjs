@@ -24,7 +24,7 @@ router
     .delete(deleteTestUsers)
 
 router
-    .route('/matchingProfiles/:userId')
+    .route('/matchingProfiles')
     .get(profileMatchingController.cacheProfiles, profileMatchingController.matchingProfile)
 
 router

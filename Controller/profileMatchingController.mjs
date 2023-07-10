@@ -5,7 +5,7 @@ import Post from "../Model/postModel.mjs";
 
 export const cacheProfiles = catchAsync(async (req, res, next) => {
 
-    const userId = req.params.userId;
+    const userId = req.user?._id
     const data = await client.get(`matchingProfiles:${userId}`)
 
     if (data !== null) {
@@ -18,7 +18,7 @@ export const cacheProfiles = catchAsync(async (req, res, next) => {
 
 export const matchingProfile = catchAsync(async (req, res) => {
 
-    const userId = req.params.userId
+    const userId = req.user?._id
     const user = await User.findById(userId)
 
     const oppositeGender = user.gender === 'male' ? 'female' : 'male';
