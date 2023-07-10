@@ -20,13 +20,6 @@ const userProtect = catchAsync(async (req, res, next) => {
         );
     }
 
-    // 4) Check if user changed password after the token was issued
-    if (currentUser.changedPasswordAfter(decoded.iat)) {
-        return next(
-            new AppError({ statusCode: 401, message: "User recently changed the password! Please login again." })
-        );
-    }
-
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
     next();
