@@ -17,7 +17,10 @@ export default function initializeSocket(server) {
 
         // add user to onlineUsers
         socket.on("addUser", (id) => {
-            onlineUsers.set(id, socket.id);
+            onlineUsers.set(id, socket.id)
+
+            // updaing online users in front end
+            socket.broadcast.emit("onlineUser", id)
         });
 
         // send message to the client
@@ -29,7 +32,7 @@ export default function initializeSocket(server) {
         });
 
         // Handle disconnections
-        socket.on("disconnect", () => {
+        socket.on("disconnect", (id) => {
             console.log("Client disconnected:", socket.id);
         });
     });
