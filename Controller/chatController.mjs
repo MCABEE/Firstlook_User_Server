@@ -52,9 +52,15 @@ export const getConnectionsUser = catchAsync(async (req, res, next) => {
         results.map((data) => user._id == data.userId ? connectionCount.push(data) : null)
     })
 
-    
+    connectionCount = users.map((user) => {
+        const countObj = connectionCount.find((count) => count.userId === user._id.toString());
+        return {
+          ...user.toObject(),
+          unReadMessages: countObj ? countObj.count : 0,
+        };
+      });
 
-    res.status(200).json({ connections: users, connectionCount })
+    res.status(200).json({ connections: connectionCount })
 })
 
 //Get the messages send between User's
