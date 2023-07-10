@@ -43,7 +43,7 @@ export const matchingProfile = catchAsync(async (req, res) => {
                         },
                         then: {
                             $and: [
-                                { $eq: [user.preferenceData.caste, '$personalInfo.caste'] },
+                                { $in: ['$personalInfo.caste', user.preferenceData.caste] },
                                 { $gte: [{ $subtract: ["$$NOW", "$dob"] }, user.preferenceData.age.minAge * 365 * 24 * 60 * 60 * 1000] },
                                 { $lte: [{ $subtract: ["$$NOW", "$dob"] }, user.preferenceData.age.maxAge * 365 * 24 * 60 * 60 * 1000] },
                                 {
