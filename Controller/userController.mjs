@@ -378,15 +378,16 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
 
 //Save Aadhar details to db
 export const addAadharDetails = catchAsync(async (req, res, next) => {
-    const userId = req.user
-
+    const userId = req?.user?._id
+    console.log(req.user)
     await Aadhar.create({
         userId: userId,
-        aadharNumber: req.body?.aadharNumber,
-        fullName: req.body?.name,
-        dob: req.body?.date_of_birth,
-        fatherName: req.body?.care_of,
-        address: req.body?.locality
+        aadharNumber: req.body?.aadhar,
+        fullName: req.body?.fullName,
+        dob: req.body?.dob,
+        fatherName: req.body?.careOf,
+        pincode: req.body?.pincode,
+        houseName: req.body?.houseName
     })
 
     res.status(200).json({
