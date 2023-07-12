@@ -92,8 +92,8 @@ export const aadharImageUploader = catchAsync(async (req, res, next) => {
             req.post = { url: imageUrl, id: imageId, type: 'image' }
     
             await Aadhar.findOneAndUpdate({ _id: userId }, { $set: {
-                'images.sideOn.url': req.post?.url,
-                'images.sideOne.id': req.post?.id
+                'images.sideTwo.url': req.post?.url,
+                'images.sideTwo.id': req.post?.id
             }})
     
             res.sendStatus(201)
