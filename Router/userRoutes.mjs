@@ -128,6 +128,14 @@ router
     .route('/remove/favouritedUser')
     .post(userController.removeFavouritedUser)
 
+router
+    .route('/blockUser')
+    .post(userController.blockUser)
+
+router
+    .route('/unBlockUser')
+    .post(userController.unBlockUser)
+
 // ====== UPLOADS ====== //
 router
     .route('/register/uploadImage')

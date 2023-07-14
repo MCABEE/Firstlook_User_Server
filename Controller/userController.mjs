@@ -545,6 +545,26 @@ export const removeFavouritedUser = catchAsync(async (req, res, next) => {
     })
 })
 
+export const blockUser = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id;
+    const blockedUserId = req?.body?.blockedUserId
+
+    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { blockedProfiles: [blockedUserId] } });
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const unBlockUser = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id;
+    const blockedUserId = req?.body?.blockedUserId
+
+    await User.findOneAndUpdate({ _id: userId }, { $pull: { blockedProfiles: blockedUserId } });
+    res.status(200).json({
+        status: "success"
+    })
+})
+
 // export const addPostsTest = catchAsync(async (req, res, next) => {
 //     const users = await User.find().skip(100).limit(500);
 
