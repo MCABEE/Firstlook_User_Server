@@ -194,6 +194,9 @@ const userSchema = new mongoose.Schema({
             minAge: Number,
             maxAge: Number,
         },
+        district: {
+            type: [String]
+        },
         caste: {
             type: [String]
         },

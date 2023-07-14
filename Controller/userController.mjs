@@ -7,7 +7,11 @@ import District from "../Model/Admin/places/districtModel.mjs";
 import HomeTown from "../Model/Admin/places/homeTownModel.mjs";
 import Pincode from "../Model/Admin/places/pincodeModel.mjs";
 import Aadhar from "../Model/aadharModel.mjs";
+import AddressRequest from "../Model/addressRequestModel.mjs";
+import MessageRequest from "../Model/messageRequestModel.mjs";
 import Post from "../Model/postModel.mjs";
+import Proposal from "../Model/proposalModel.mjs";
+import Report from "../Model/reportModel.mjs";
 import User from "../Model/userModel.mjs";
 import catchAsync from "../utils/catchAsync.mjs";
 // import { faker } from '@faker-js/faker'
@@ -64,7 +68,7 @@ export const addAboutYou = catchAsync(async (req, res, next) => {
             displayName: req.body?.displayName,
             dob: req.body?.dob,
             gender: req.body?.gender
-        }, $pull: { registartionStatus: "About You"}
+        }, $pull: { registartionStatus: "About You" }
     }, { multi: true })
 
     res.status(200).json({
@@ -83,7 +87,7 @@ export const addNative = catchAsync(async (req, res, next) => {
             'native.district': req.body?.district,
             'native.state': req.body?.state,
             'native.motherTongue': req.body?.motherToungue,
-        }, $pull: { registartionStatus: "Native"}
+        }, $pull: { registartionStatus: "Native" }
     }, { multi: true })
 
     res.status(200).json({
@@ -105,7 +109,7 @@ export const addPersonalInfo = catchAsync(async (req, res, next) => {
             'personalInfo.weight': req.body?.weight,
             'personalInfo.bodyType': req.body?.bodyType,
             'personalInfo.physicalStatus': req.body?.physicalStatus,
-        }, $pull: { registartionStatus: "Personal Info"}
+        }, $pull: { registartionStatus: "Personal Info" }
     }, { multi: true })
 
     res.status(200).json({
@@ -126,7 +130,7 @@ export const addAdditionalPersonalInfo = catchAsync(async (req, res, next) => {
             'personalInfo.bloodGroup': req.body?.bloodGroup,
             'personalInfo.license': req.body?.license,
             'personalInfo.financialStatus': req.body?.financialStatus,
-        }, $pull: { registartionStatus: "Personal Info2"}
+        }, $pull: { registartionStatus: "Personal Info2" }
     }, { multi: true })
 
     res.status(200).json({
@@ -149,7 +153,7 @@ export const addAcademic = catchAsync(async (req, res, next) => {
             'academic.institute': req.body?.institute,
             'academic.college': req.body?.college,
             'academic.passOut': req.body?.passYear,
-        }, $pull: { registartionStatus: "Academic"}
+        }, $pull: { registartionStatus: "Academic" }
     }, { multi: true })
 
     if (req.body?.university) {
@@ -202,7 +206,7 @@ export const addOccupation = catchAsync(async (req, res, next) => {
             'occupation.district': req.body?.district,
             'occupation.city': req.body?.city,
             'occupation.annualIncome': req.body?.annualIncome,
-        }, $pull: { registartionStatus: "Occupation"}
+        }, $pull: { registartionStatus: "Occupation" }
     }, { multi: true })
 
     if (req.body?.city) {
@@ -231,7 +235,7 @@ export const addOccupationCategory = catchAsync(async (req, res, next) => {
             'occupation.jobStream': req.body?.stream,
             'occupation.employer': req.body?.employerName,
             'occupation.companyName': req.body?.companyName,
-        }, $pull: { registartionStatus: "Occupation2"}
+        }, $pull: { registartionStatus: "Occupation2" }
     }, { multi: true })
 
     if (req.body?.designation) {
@@ -278,7 +282,7 @@ export const addFamily = catchAsync(async (req, res, next) => {
             'family.motherEducation': req.body?.motherEducation,
             'family.motherOccupation': req.body?.motherOccupation,
             'family.siblings': req.body?.siblings,
-        }, $pull: { registartionStatus: "Family"}
+        }, $pull: { registartionStatus: "Family" }
     }, { multi: true })
 
     res.status(200).json({
@@ -299,10 +303,10 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
             'familyAddress.pincode': req.body?.pincode,
             'familyAddress.homePhone': req.body?.contactNumber,
             'familyAddress.secondPhone': req.body?.homeContactNumber,
-        }, $pull: { registartionStatus: "Family2"}
+        }, $pull: { registartionStatus: "Family2" }
     }, { multi: true })
 
-    if(req?.body?.district) { 
+    if (req?.body?.district) {
         const district = await District.findOne({ name: req?.body?.district })
         districtId = district?._id
     }
@@ -394,6 +398,151 @@ export const addAadharDetails = catchAsync(async (req, res, next) => {
         status: "success"
     })
 
+})
+
+export const proposeUser = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+
+    const isProposed = await Proposal.findOne({ proposedBy: userId })
+
+    if (isProposed) {
+
+        res.status(200).json({
+            message: 'Already Proposed'
+        })
+
+        if (isProposed?.status === 'Rejected') {
+            res.status(200).json({
+                message: 'Rejected by user'
+            })
+        }
+    }
+    else {
+        await Proposal.create({
+            proposedBy: userId,
+            proposedProfile: req?.body?.proposedProfileId
+        })
+
+        res.status(200).json({
+            status: "success"
+        })
+    }
+})
+
+export const updateProposalStatus = catchAsync(async (req, res, next) => {
+    const proposalId = req?.body?.proposalId
+
+    await Proposal.findOneAndUpdate({ _id: proposalId }, { $set: { status: req?.body?.status } })
+
+    const proposalData = await Proposal.find()
+    proposalData?.map(async (data) => {
+        if (proposalData?.status === 'Cancelled') {
+            await Proposal.findOneAndDelete({ _id: data?._id })
+        }
+    })
+
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const reportUser = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+
+    await Report.create({
+        reporterId: userId,
+        reportedProfile: req?.body?.reportedProfile,
+        reason: req?.body?.reason,
+        detailedMessage: req?.body?.detailedMessage
+    })
+
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const requestAddress = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+
+    await AddressRequest.create({
+        requestedBy: userId,
+        requestedAddressProfile: req?.body?.requestedAddressProfile
+    })
+
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const updateAddressStatus = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+
+    await AddressRequest.findOneAndUpdate({ requestedAddressProfile: userId }, { $set: { status: req?.body?.status } })
+
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const addPreferenceData = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+
+    await User.findOneAndUpdate({ _id: userId }, {
+        $set: {
+            'preferenceData.age.minAge': req.body?.minAge,
+            'preferenceData.age.maxAge': req.body?.maxAge,
+            'preferenceData.caste': req?.body?.caste,
+            'preferenceData.occupation': req?.body?.occupation,
+            'preferenceData.qualification': req?.body?.qualification,
+            'preferenceData.maritalStatus': req?.body?.maritalStatus,
+            'preferenceData.location': req?.body?.workLocation,
+            'preferenceData.district': req?.body?.district,
+        }
+    })
+
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const addNotInterested = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id;
+    const notInterestedUserId = req?.body?.notInterestedUserId
+
+    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { notInterested: [notInterestedUserId] } });
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const removeFromNotInterested = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id;
+    const notInterestedUserId = req?.body?.notInterestedUserId
+
+    await User.findOneAndUpdate({ _id: userId }, { $pull: { notInterested: notInterestedUserId } });
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const addFavourites = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id;
+    const favouritedUserId = req?.body?.favouritedUserId
+
+    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { favourites: [favouritedUserId] } });
+    res.status(200).json({
+        status: "success"
+    })
+})
+
+export const removeFavouritedUser = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id;
+    const favouritedUserId = req?.body?.favouritedUserId
+
+    await User.findOneAndUpdate({ _id: userId }, { $pull: { favourites: favouritedUserId } });
+    res.status(200).json({
+        status: "success"
+    })
 })
 
 // export const addPostsTest = catchAsync(async (req, res, next) => {

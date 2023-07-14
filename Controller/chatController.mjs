@@ -89,20 +89,21 @@ export const getMessage = catchAsync(async (req, res, next) => {
 })
 
 //Save Chat request to db
-export const messageRequest = catchAsync(async (req, res, next) => {
-    const { sender, receiver } = req.body
+export const requestForMessage = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+    const { receiver } = req.body
     await Message.create({
-        sender,
+        sender: userId,
         receiver
     })
     res.sendStatus(200)
 })
 
 export const changeRequestStatus = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+    const { receiver, status } = req.body
 
-    const { sender, receiver, status } = req.body
-
-    await Message.findOneAndUpdate({ sender, receiver }, { $set: { requestStatus: status } })
+    await Message.findOneAndUpdate({ sender: userId, receiver }, { $set: { requestStatus: status } })
 
     const chatData = await Message.find()
     chatData?.map(async (data) => {
@@ -112,4 +113,11 @@ export const changeRequestStatus = catchAsync(async (req, res, next) => {
     })
 
     res.sendStatus(200)
+})
+
+export const allMessageCount = catchAsync(async (req, res, next) => {
+    const userId = req?.user?._id
+
+    const count = await Message.countDocuments({ chatUsers: userId, sender: { $ne: userId }, read: false });
+    res.status(200).json({ count })
 })

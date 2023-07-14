@@ -12,9 +12,11 @@ const proposalSchema = new Schema({
         required: true
     },
     status: {
-        type: Boolean,
-        default: false
+        type: String,
+        enum: ["Accepted", "Rejected", "Cancelled", "Pending"],
+        default: "Pending"
     }
 }, { timestamps: true });
 
-export default Proposal = model('Proposal', proposalSchema);
+const Proposal = model('Proposal', proposalSchema);
+export default Proposal;

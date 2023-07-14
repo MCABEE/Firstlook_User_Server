@@ -2,7 +2,7 @@ import express from 'express'
 import * as userController from '../Controller/userController.mjs'
 import * as profileMatchingController from '../Controller/profileMatchingController.mjs'
 import { createRndomTestUsers, deleteTestUsers } from '../Controller/testDataController.mjs'
-import { chat, getConnectionsUser, getMessage } from '../Controller/chatController.mjs'
+import { allMessageCount, changeRequestStatus, chat, getConnectionsUser, getMessage, requestForMessage } from '../Controller/chatController.mjs'
 import { uploadImage } from '../Cloudflare/imageUploader.mjs'
 import { convertImage } from '../Cloudflare/imageConvert.mjs'
 import { savePost, updateProfileImage, updateProfileImageAndSaveAsPost } from '../Controller/postController.mjs'
@@ -87,20 +87,46 @@ router
     .patch(userController.addNativeQuick)
 
 router
-    .route('/getConnections')
-    .get(getConnectionsUser)
-
-router
-    .route('/chat')
-    .post(chat)
-
-router
-    .route('/getMessage/:to')
-    .get(getMessage)
+    .route('/addPreferenceData')
+    .patch(userController.addPreferenceData)
 
 router
     .route('/register/uploadAadhar')
     .post(userController.addAadharDetails)
+
+// ====== GENERAL USER FUNCTIONS ====== //
+
+router
+    .route('/register/proposeUser')
+    .post(userController.proposeUser)
+
+router
+    .route('/update/proposalStatus')
+    .post(userController.updateProposalStatus)
+
+router
+    .route('/request/Address')
+    .post(userController.requestAddress)
+
+router
+    .route('/update/addressStatus')
+    .post(userController.updateAddressStatus)
+
+router
+    .route('/add/notInterested')
+    .post(userController.addNotInterested)
+
+router
+    .route('/remove/notInterestedUser')
+    .post(userController.removeFromNotInterested)
+
+router
+    .route('/add/favouriteUser')
+    .post(userController.addFavourites)
+
+router
+    .route('/remove/favouritedUser')
+    .post(userController.removeFavouritedUser)
 
 // ====== UPLOADS ====== //
 router
@@ -122,5 +148,31 @@ router
 router
     .route('/upload/postVideo')
     .post(videoConverter, uploadVideo, savePost)
+
+// ====== CHAT ====== //
+
+router
+    .route('/getConnections')
+    .get(getConnectionsUser)
+
+router
+    .route('/chat')
+    .post(chat)
+
+router
+    .route('/getMessage/:to')
+    .get(getMessage)
+
+router
+    .route('/chat/getCount')
+    .get(allMessageCount)
+
+router
+    .route('/chat/messageRequest')
+    .post(requestForMessage)
+
+router
+    .route('/chat/changeRequestStatus')
+    .post(changeRequestStatus)
 
 export default router

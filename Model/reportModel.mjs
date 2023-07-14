@@ -24,4 +24,5 @@ const reportSchema = new Schema({
     // }
 }, { timestamps: true });
 
-export default Report = model('Report', reportSchema);
+const Report = model('Report', reportSchema);
+export default Report;

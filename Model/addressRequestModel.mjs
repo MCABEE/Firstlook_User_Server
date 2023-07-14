@@ -13,9 +13,10 @@ const addressRequestSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['Approved', 'Not Approved'],
+        enum: ['Approved', 'Not Approved', 'Reject'],
         default: "Not Approved"
     }
 }, { timestamps: true });
 
-export default AddressRequest = model('AddressRequest', addressRequestSchema);
+const AddressRequest = model('AddressRequest', addressRequestSchema);
+export default AddressRequest;
