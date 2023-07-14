@@ -509,7 +509,7 @@ export const addNotInterested = catchAsync(async (req, res, next) => {
     const userId = req?.user?._id;
     const notInterestedUserId = req?.body?.notInterestedUserId
 
-    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { notInterested: [notInterestedUserId] } });
+    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { notInterested: notInterestedUserId } });
     res.status(200).json({
         status: "success"
     })
@@ -529,7 +529,7 @@ export const addFavourites = catchAsync(async (req, res, next) => {
     const userId = req?.user?._id;
     const favouritedUserId = req?.body?.favouritedUserId
 
-    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { favourites: [favouritedUserId] } });
+    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { favourites: favouritedUserId } });
     res.status(200).json({
         status: "success"
     })
@@ -549,7 +549,7 @@ export const blockUser = catchAsync(async (req, res, next) => {
     const userId = req?.user?._id;
     const blockedUserId = req?.body?.blockedUserId
 
-    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { blockedProfiles: [blockedUserId] } });
+    await User.findOneAndUpdate({ _id: userId }, { $addToSet: { blockedProfiles: blockedUserId } });
     res.status(200).json({
         status: "success"
     })
