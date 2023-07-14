@@ -13,12 +13,15 @@ const aadharSchema = new mongoose.Schema({
         type: String
     },
     dob: {
-        type: Date
+        type: String
     },
     fatherName: {
         type: String
     },
-    address: {
+    pincode: {
+        type: Number
+    },
+    houseName: {
         type: String
     },
     images: {

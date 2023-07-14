@@ -5,11 +5,12 @@ import catchAsync from "../utils/catchAsync.mjs";
 //Save Chat messages send between user's to db
 export const chat = catchAsync(async (req, res, next) => {
     
-    const { from, to, message } = req.body
+    const { from, to, message, type } = req.body
     const newMessage = await Message.create({
         message: message,
         chatUsers: [from, to],
-        sender: from
+        sender: from,
+        type
     })
     res.status(200).json({
         data: {

@@ -3,6 +3,7 @@ import Employer from "../Model/Admin/employer/employerModel.mjs";
 import Institution from "../Model/Admin/institutions/institutionModel.mjs";
 import Designation from "../Model/Admin/occupation/designationModel.mjs";
 import City from "../Model/Admin/places/cityModel.mjs";
+import District from "../Model/Admin/places/districtModel.mjs";
 import HomeTown from "../Model/Admin/places/homeTownModel.mjs";
 import Pincode from "../Model/Admin/places/pincodeModel.mjs";
 import Aadhar from "../Model/aadharModel.mjs";
@@ -222,7 +223,7 @@ export const addOccupationCategory = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
 
-    await User.findOneAndUpdate({ _id: userId }, {
+    const userData = await User.findOneAndUpdate({ _id: userId }, {
         $set: {
             'occupation.designation': req.body?.designation,
             'occupation.jobCategory': req.body?.jobCategory,
@@ -258,7 +259,8 @@ export const addOccupationCategory = catchAsync(async (req, res, next) => {
     }
 
     res.status(200).json({
-        status: "success"
+        status: "success",
+        userData
     })
 });
 
@@ -288,6 +290,7 @@ export const addFamily = catchAsync(async (req, res, next) => {
 export const addFamilyAddress = catchAsync(async (req, res, next) => {
 
     const userId = req.params?.userId
+    let districtId
 
     await User.findOneAndUpdate({ _id: userId }, {
         $set: {
@@ -299,11 +302,16 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
         }, $pull: { registartionStatus: "Family2"}
     }, { multi: true })
 
+    if(req?.body?.district) { 
+        const district = await District.findOne({ name: req?.body?.district })
+        districtId = district?._id
+    }
+
     if (req.body?.pincode) {
         const existingPincodes = await Pincode.findOne({ name: req.body?.pincode });
 
         if (!existingPincodes) {
-            await Pincode.create({ district: req.body?.districtId, code: req.body?.pincode });
+            await Pincode.create({ district: districtId, code: req.body?.pincode });
         }
     }
 
@@ -311,7 +319,7 @@ export const addFamilyAddress = catchAsync(async (req, res, next) => {
         const existingHomeTowns = await HomeTown.findOne({ name: req.body?.homeTown });
 
         if (!existingHomeTowns) {
-            await HomeTown.create({ district: req.body?.districtId, name: req.body?.homeTown });
+            await HomeTown.create({ district: districtId, name: req.body?.homeTown });
         }
     }
 
@@ -358,7 +366,7 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
             'occupation.jobCategory': req.body?.jobCategory,
             'occupation.jobType': req.body?.jobType,
             'occupation.jobStream': req.body?.stream,
-            'occupation.department': req.body?.department,
+            'occupation.employer': req.body?.employerName,
             'occupation.companyName': req.body?.companyName
         }
     }, { multi: true })
@@ -370,15 +378,16 @@ export const addNativeQuick = catchAsync(async (req, res, next) => {
 
 //Save Aadhar details to db
 export const addAadharDetails = catchAsync(async (req, res, next) => {
-    const userId = req.user
-
+    const userId = req?.user?._id
+    console.log(req.user)
     await Aadhar.create({
         userId: userId,
-        aadharNumber: req.body?.aadharNumber,
-        fullName: req.body?.name,
-        dob: req.body?.date_of_birth,
-        fatherName: req.body?.care_of,
-        address: req.body?.locality
+        aadharNumber: req.body?.aadhar,
+        fullName: req.body?.fullName,
+        dob: req.body?.dob,
+        fatherName: req.body?.careOf,
+        pincode: req.body?.pincode,
+        houseName: req.body?.houseName
     })
 
     res.status(200).json({
